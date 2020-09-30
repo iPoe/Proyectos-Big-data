@@ -93,10 +93,25 @@ predict_test.select("Outcome","prediction").show(10)
 
 
 #This is the evaluator
-evaluator=BinaryClassificationEvaluator(rawPredictionCol=”rawPrediction”,labelCol=”Outcome”)
+evaluator=BinaryClassificationEvaluator(rawPredictionCol="rawPrediction",labelCol="Outcome")
 predict_test.select("Outcome","rawPrediction","prediction","probability").show(5)
 print("The area under ROC for train set is {}".format(evaluator.evaluate(predict_train)))
 print("The area under ROC for test set is {}".format(evaluator.evaluate(predict_test)))
+
+
+#Modelo numero 2: DecisionTreeClassifier
+
+from pyspark.ml.classification import DecisionTreeClassifier
+dt = DecisionTreeClassifier(labelCol="Outcome", featuresCol="Aspect")
+dt_model = dt.fit(train)
+dt_prediction = dt_model.transform(test)
+
+dt_accuracy = evaluator.evaluate(dt_prediction)
+print("Accuracy of DecisionTreeClassifier is = %g"% (dt_accuracy))
+print("Test Error of DecisionTreeClassifier = %g " % (1.0 - dt_accuracy))
+
+
+
 
 
 
