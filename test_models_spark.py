@@ -11,8 +11,7 @@ from pyspark.ml.evaluation import BinaryClassificationEvaluator
 
 
 
-spark = 
-SparkSession.builder.master("local").appName("diabeties").config("spark.some.config.option",
+spark = SparkSession.builder.master("local").appName("diabeties").config("spark.some.config.option",
 	"some-value").getOrCreate()
 
 
@@ -38,7 +37,7 @@ raw_data=raw_data.withColumn("Insulin",
 	when(raw_data.Insulin==0,np.nan).otherwise(raw_data.Insulin))
 
 
-raw_data.select("Insulin","Glucose","BloodPressure","SkinThickness","BMI").show(5)
+#raw_data.select("Insulin","Glucose","BloodPressure","SkinThickness","BMI").show(5)
 
 imputer=Imputer(inputCols=["Glucose","BloodPressure","SkinThickness","BMI","Insulin"],
 	outputCols=["Glucose","BloodPressure","SkinThickness","BMI","Insulin"])
@@ -70,8 +69,8 @@ dataset_size=float(train.select("Outcome").count())
 numPositives=train.select("Outcome").where('Outcome == 1').count()
 per_ones=(float(numPositives)/float(dataset_size))*100
 numNegatives=float(dataset_size-numPositives)
-print('The number of ones are {}'.format(numPositives))
-print('Percentage of ones are {}'.format(per_ones))
+#print('The number of ones are {}'.format(numPositives))
+#print('Percentage of ones are {}'.format(per_ones))
 
 
 BalancingRatio= numNegatives/dataset_size
@@ -89,26 +88,37 @@ lr = LogisticRegression(labelCol="Outcome", featuresCol="Aspect",weightCol="clas
 model=lr.fit(train)
 predict_train=model.transform(train)
 predict_test=model.transform(test)
-predict_test.select("Outcome","prediction").show(10)
+#predict_test.select("Outcome","prediction").show(10)
 
 
 #This is the evaluator
 evaluator=BinaryClassificationEvaluator(rawPredictionCol="rawPrediction",labelCol="Outcome")
 predict_test.select("Outcome","rawPrediction","prediction","probability").show(5)
 print("The area under ROC for train set is {}".format(evaluator.evaluate(predict_train)))
-print("The area under ROC for test set is {}".format(evaluator.evaluate(predict_test)))
+print("Esto es accuracy {}".format(evaluator.evaluate(predict_test)))
 
 
 #Modelo numero 2: DecisionTreeClassifier
 
 from pyspark.ml.classification import DecisionTreeClassifier
-dt = DecisionTreeClassifier(labelCol="Outcome", featuresCol="Aspect")
+dt = DecisionTreeClassifier(labelCol="Outcome", featuresCol="features")
 dt_model = dt.fit(train)
 dt_prediction = dt_model.transform(test)
 
 dt_accuracy = evaluator.evaluate(dt_prediction)
 print("Accuracy of DecisionTreeClassifier is = %g"% (dt_accuracy))
 print("Test Error of DecisionTreeClassifier = %g " % (1.0 - dt_accuracy))
+
+
+
+#Naive Bayes 
+from pyspark.ml.classification import NaiveBayes
+nb = NaiveBayes(labelCol="Outcome",featuresCol="features")
+nb_model = nb.fit(train)
+nb_prediction = nb_model.transform(test)
+nb_accuracy = evaluator.evaluate(nb_prediction)
+print("Accuracy of Naive bayes is = %g"%(nb_accuracy))
+
 
 
 
