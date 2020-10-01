@@ -120,8 +120,12 @@ nb_accuracy = evaluator.evaluate(nb_prediction)
 print("Accuracy of Naive bayes is = %g"%(nb_accuracy))
 
 
+from pyspark.ml.classification import GBTClassifier
+gbt = GBTClassifier(labelCol="Outcome", featuresCol="features",maxIter=10)
+gbt_model = gbt.fit(train)
+gbt_prediction = gbt_model.transform(test)
+#gbt_prediction.select("prediction", "Survived", "features").show()
 
-
-
-
-
+gbt_accuracy = evaluator.evaluate(gbt_prediction)
+print("Accuracy of Gradient-boosted tree classifie is = %g"% (gbt_accuracy))
+print("Test Error of Gradient-boosted tree classifie %g"% (1.0 - gbt_accuracy))
