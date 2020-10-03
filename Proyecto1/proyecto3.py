@@ -106,13 +106,13 @@ train, test = data.randomSplit([0.8, 0.2])
 lr = LogisticRegression(labelCol='AuthorNum',maxIter=10)
 
 # Fit the model
-lrModel = lr.fit(train)
+lrModel = lr.fit(train2)
 
 # Print the coefficients and intercept for multinomial logistic regression
 #print("Coefficients:" + str(lrModel.coefficientMatrix))
 
-predict_train=lrModel.transform(train)
-predict_test=lrModel.transform(test)
+predict_train=lrModel.transform(train2)
+predict_test=lrModel.transform(test2)
 
 evaluator = MulticlassClassificationEvaluator(labelCol="AuthorNum", predictionCol="prediction", metricName="accuracy")
 lr_accuracy = evaluator.evaluate(predict_test)
