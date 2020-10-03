@@ -90,7 +90,7 @@ data.groupby("AuthorNum").count().show()
 #####################################################################################################
 #COMIENZA PUNTO 3
 #Entrenamiento de modelos:
-#Primero modelo: Regresion logistica
+#Modelo 1
 cols=data.columns
 cols.remove("AuthorNum")
 # Let us import the vector assembler
@@ -119,7 +119,7 @@ print("Accuracy of LogisticRegression is = %g"% (lr_accuracy))
 
 
 
-#Clasificador decission tree
+#Modelo 2
 from pyspark.ml.classification import DecisionTreeClassifier
 dt = DecisionTreeClassifier(labelCol="AuthorNum", featuresCol="features")
 dt_model = dt.fit(train)
@@ -128,4 +128,22 @@ dt_prediction = dt_model.transform(test)
 dt_accuracy = evaluator.evaluate(dt_prediction)
 print("Accuracy of DecisionTreeClassifier is = %g"% (dt_accuracy))
 print("Test Error of DecisionTreeClassifier = %g " % (1.0 - dt_accuracy))
+#Modelo 3
 
+from pyspark.ml.classification import NaiveBayes
+nb = NaiveBayes(labelCol="Outcome",featuresCol="features")
+nb_model = nb.fit(train)
+nb_prediction = nb_model.transform(test)
+nb_accuracy = evaluator.evaluate(nb_prediction)
+print("Accuracy of Naive bayes is = %g"%(nb_accuracy))
+
+#Modelo 4
+from pyspark.ml.classification import GBTClassifier
+gbt = GBTClassifier(labelCol="Outcome", featuresCol="features",maxIter=10)
+gbt_model = gbt.fit(train)
+gbt_prediction = gbt_model.transform(test)
+#gbt_prediction.select("prediction", "Survived", "features").show()
+
+gbt_accuracy = evaluator.evaluate(gbt_prediction)
+print("Accuracy of Gradient-boosted tree classifie is = %g"% (gbt_accuracy))
+print("Test Error of Gradient-boosted tree classifie %g"% (1.0 - gbt_accuracy))
