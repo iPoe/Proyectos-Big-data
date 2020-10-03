@@ -7,7 +7,6 @@ from pyspark.ml.feature import StandardScaler
 from pyspark.ml.feature import ChiSqSelector
 from pyspark.ml.classification import LogisticRegression
 from pyspark.ml.evaluation import BinaryClassificationEvaluator
-#import matplotlib.pyplot as plt
 from pyspark.ml.evaluation import MulticlassClassificationEvaluator
 from pyspark.sql.functions import dayofweek
 from pyspark.sql.functions import isnan, when, count, col, lit, sum
@@ -91,7 +90,7 @@ data.groupby("AuthorNum").count().show()
 #####################################################################################################
 #COMIENZA PUNTO 3
 #Entrenamiento de modelos:
-#Primero modelo: Regresión logistica
+#Primero modelo: Regresion logistica
 cols=data.columns
 cols.remove("AuthorNum")
 # Let us import the vector assembler
