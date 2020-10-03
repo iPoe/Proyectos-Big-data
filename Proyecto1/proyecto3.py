@@ -115,7 +115,7 @@ predict_test=lrModel.transform(test)
 
 evaluator = MulticlassClassificationEvaluator(labelCol="AuthorNum", predictionCol="prediction", metricName="accuracy")
 lr_accuracy = evaluator.evaluate(predict_test)
-print("F1 score of LogisticRegression is = %g"% (lr_accuracy))
+print("Accuracy score of LogisticRegression is = %g"% (lr_accuracy))
 
 
 # instantiate the One Vs Rest Classifier.
