@@ -127,7 +127,7 @@ dt_prediction = dt_model.transform(test)
 
 dt_accuracy = evaluator.evaluate(dt_prediction)
 print("Accuracy of DecisionTreeClassifier is = %g"% (dt_accuracy))
-print("Test Error of DecisionTreeClassifier = %g " % (1.0 - dt_accuracy))
+#print("Test Error of DecisionTreeClassifier = %g " % (1.0 - dt_accuracy))
 #Modelo 3
 
 # from pyspark.ml.classification import NaiveBayes
@@ -157,4 +157,4 @@ rf_prediction = rf_model.transform(test)
 
 rf_accuracy = evaluator.evaluate(rf_prediction)
 print("Accuracy of RandomForestClassifier is = %g"% (rf_accuracy))
-print("Test Error of RandomForestClassifier  = %g " % (1.0 - rf_accuracy))
+#print("Test Error of RandomForestClassifier  = %g " % (1.0 - rf_accuracy))
