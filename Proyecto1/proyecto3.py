@@ -102,7 +102,7 @@ data=assembler.transform(data)
 
 train, test = data.randomSplit([0.8, 0.2], seed=12345)
 
-lr = LogisticRegression(labelCol="AuthorNum", featuresCol="features",maxIter=50, elasticNetParam=1.0, family="multinomial")
+lr = LogisticRegression(labelCol="AuthorNum", featuresCol="features",maxIter=10)
 
 # Fit the model
 lrModel = lr.fit(train)
