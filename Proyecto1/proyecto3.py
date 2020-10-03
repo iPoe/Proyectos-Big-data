@@ -5,7 +5,7 @@ from pyspark.ml.feature import Imputer
 from pyspark.ml.feature import VectorAssembler
 from pyspark.ml.feature import StandardScaler
 from pyspark.ml.feature import ChiSqSelector
-from pyspark.ml.classification import LogisticRegression
+from pyspark.ml.classification import LogisticRegression,OneVsRest
 from pyspark.ml.evaluation import BinaryClassificationEvaluator
 from pyspark.ml.evaluation import MulticlassClassificationEvaluator
 from pyspark.sql.functions import dayofweek
