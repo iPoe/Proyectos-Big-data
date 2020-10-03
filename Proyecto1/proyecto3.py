@@ -117,23 +117,40 @@ evaluator = MulticlassClassificationEvaluator(labelCol="AuthorNum", predictionCo
 lr_accuracy = evaluator.evaluate(predict_test)
 print("F1 score of LogisticRegression is = %g"% (lr_accuracy))
 
-from pyspark.ml.tuning import CrossValidator, ParamGridBuilder
 
-paramGrid = (ParamGridBuilder()
-  .addGrid(lr.regParam, [0.01, 0.1, 0.5]) \
-  .addGrid(lr.maxIter, [10, 20, 50]) \
-  .addGrid(lr.elasticNetParam, [0.0, 0.8]) \
-  .build())
+# instantiate the One Vs Rest Classifier.
+ovr = OneVsRest(classifier=lr)
 
-crossval = CrossValidator(estimator=lr,
-                          estimatorParamMaps=paramGrid,
-                          evaluator=evaluator,
-                          numFolds=3)
+# train the multiclass model.
+ovrModel = ovr.fit(train)
 
-model_lr = crossval.fit(train)
-predictions_lr = model_lr.transform(test)
+# score the model on test data.
+predictions_ovr = ovrModel.transform(test)
 
-print(evaluator.evaluate(predictions_lr))
+# obtain evaluator.
+evaluator_ovr = MulticlassClassificationEvaluator(metricName="accuracy")
+
+# compute the classification error on test data.
+accuracy_ovr = evaluator.evaluate(predictions_ovr)
+print("accuracy of LogisticRegression with ovr is = %g"% (accuracy_ovr))
+
+# from pyspark.ml.tuning import CrossValidator, ParamGridBuilder
+
+# paramGrid = (ParamGridBuilder()
+#   .addGrid(lr.regParam, [0.01, 0.1, 0.5]) \
+#   .addGrid(lr.maxIter, [10, 20, 50]) \
+#   .addGrid(lr.elasticNetParam, [0.0, 0.8]) \
+#   .build())
+
+# crossval = CrossValidator(estimator=lr,
+#                           estimatorParamMaps=paramGrid,
+#                           evaluator=evaluator,
+#                           numFolds=3)
+
+# model_lr = crossval.fit(train)
+# predictions_lr = model_lr.transform(test)
+
+# print(evaluator.evaluate(predictions_lr))
 
 
 #Modelo 2
