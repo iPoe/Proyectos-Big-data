@@ -97,12 +97,13 @@ cols.remove("AuthorNum")
 
 assembler = VectorAssembler(inputCols=cols,outputCol="features")
 # Now let us use the transform method to transform our dataset
+data2 = data
 data=assembler.transform(data)
 #data.select("features").show(truncate=False)
-
+train2, test2 = data2.randomSplit([0.8, 0.2])
 train, test = data.randomSplit([0.8, 0.2])
 
-lr = LogisticRegression(labelCol="AuthorNum", featuresCol="features",maxIter=10)
+lr = LogisticRegression(labelCol='AuthorNum',maxIter=10)
 
 # Fit the model
 lrModel = lr.fit(train)
@@ -117,9 +118,12 @@ evaluator = MulticlassClassificationEvaluator(labelCol="AuthorNum", predictionCo
 lr_accuracy = evaluator.evaluate(predict_test)
 print("Accuracy score of LogisticRegression is = %g"% (lr_accuracy))
 
+trainingSummary = lrModel.summary
+print("RMSE: %f" % trainingSummary.rootMeanSquaredError)
+print("r2: %f" % trainingSummary.r2)
 
 # instantiate the One Vs Rest Classifier.
-ovr = OneVsRest(classifier=lr,labelCol='AuthorNum',featuresCol='features')
+ovr = OneVsRest(classifier=lr,labelCol='AuthorNum')
 
 # train the multiclass model.
 ovrModel = ovr.fit(train)
