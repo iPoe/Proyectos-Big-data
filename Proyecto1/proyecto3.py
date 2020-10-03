@@ -138,12 +138,23 @@ print("Test Error of DecisionTreeClassifier = %g " % (1.0 - dt_accuracy))
 # print("Accuracy of Naive bayes is = %g"%(nb_accuracy))
 
 #Modelo 4
-from pyspark.ml.classification import GBTClassifier
-gbt = GBTClassifier(labelCol="AuthorNum", featuresCol="features",maxIter=10)
-gbt_model = gbt.fit(train)
-gbt_prediction = gbt_model.transform(test)
-#gbt_prediction.select("prediction", "Survived", "features").show()
+# from pyspark.ml.classification import GBTClassifier
+# gbt = GBTClassifier(labelCol="AuthorNum", featuresCol="features",maxIter=10)
+# gbt_model = gbt.fit(train)
+# gbt_prediction = gbt_model.transform(test)
+# #gbt_prediction.select("prediction", "Survived", "features").show()
 
-gbt_accuracy = evaluator.evaluate(gbt_prediction)
-print("Accuracy of Gradient-boosted tree classifie is = %g"% (gbt_accuracy))
-print("Test Error of Gradient-boosted tree classifie %g"% (1.0 - gbt_accuracy))
+# gbt_accuracy = evaluator.evaluate(gbt_prediction)
+# print("Accuracy of Gradient-boosted tree classifie is = %g"% (gbt_accuracy))
+# print("Test Error of Gradient-boosted tree classifie %g"% (1.0 - gbt_accuracy))
+
+
+
+from pyspark.ml.classification import RandomForestClassifier
+rf = DecisionTreeClassifier(labelCol="Survived", featuresCol="features")
+rf_model = rf.fit(trainingData)
+rf_prediction = rf_model.transform(testData)
+
+rf_accuracy = evaluator.evaluate(rf_prediction)
+print("Accuracy of RandomForestClassifier is = %g"% (rf_accuracy))
+print("Test Error of RandomForestClassifier  = %g " % (1.0 - rf_accuracy))
