@@ -7,7 +7,7 @@ from pyspark.ml.feature import StandardScaler
 from pyspark.ml.feature import ChiSqSelector
 from pyspark.ml.classification import LogisticRegression
 from pyspark.ml.evaluation import BinaryClassificationEvaluator
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 from pyspark.ml.evaluation import MulticlassClassificationEvaluator
 from pyspark.sql.functions import dayofweek
 from pyspark.sql.functions import isnan, when, count, col, lit, sum
@@ -15,7 +15,7 @@ from pyspark.sql.functions import (to_date, datediff, date_format,month)
 
 #Se carga el conjunto de datos
 spark = SparkSession.builder.master("local").appName("Avila").config("spark.some.config.option","some-value").getOrCreate()
-data = spark.read.format("csv").option("header","true").option("inferSchema", "true").load(r"file:///home/maria_dev/avila.csv")
+data = spark.read.format("csv").option("header","true").option("inferSchema", "true").load(r"avila.csv")
 
 #####################################################################################################
 #PRIMER PUNTO
@@ -39,8 +39,8 @@ pd = data.toPandas()
 print(pd.corr())
 
 #Diagrama de cajas para verificar datos atipicos
-plt.boxplot((pd['F1'],pd['F2'],pd['F3'],pd['F4'],pd['F5'],pd['F6'],pd['F7'],pd['F8'],pd['F9'],pd['F10']))
-plt.show()
+#plt.boxplot((pd['F1'],pd['F2'],pd['F3'],pd['F4'],pd['F5'],pd['F6'],pd['F7'],pd['F8'],pd['F9'],pd['F10']))
+#plt.show()
 
 #Distribucion del atributo clasificador
 data.groupby("Author").count().show()
@@ -70,7 +70,7 @@ data.groupby("AuthorNum").count().show()
 A = data.filter(data.AuthorNum == 0.0).sample(fraction=0.9)
 #A.groupby("AuthorNum").count().show()
 F = data.filter(col("AuthorNum") == 1.0).withColumn("dummy", explode(array([lit(x) for x in range(2)]))).drop('dummy')
-E = data.filter(col("AuthorNum") == 2.0).withColumn("dummy", explode(array([lit(x) for x in range(3)]))).drop('dummy')
+E = data.filter(col("AuthorNum") == 1.0).withColumn("dummy", explode(array([lit(x) for x in range(3)]))).drop('dummy')
 I = data.filter(col("AuthorNum") == 3.0).withColumn("dummy", explode(array([lit(x) for x in range(3)]))).drop('dummy')
 X = data.filter(col("AuthorNum") == 4.0).withColumn("dummy", explode(array([lit(x) for x in range(5)]))).drop('dummy')
 H = data.filter(col("AuthorNum") == 5.0).withColumn("dummy", explode(array([lit(x) for x in range(5)]))).drop('dummy')
