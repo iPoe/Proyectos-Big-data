@@ -113,7 +113,7 @@ lrModel = lr.fit(train)
 predict_train=lrModel.transform(train)
 predict_test=lrModel.transform(test)
 
-evaluator = MulticlassClassificationEvaluator(labelCol="AuthorNum", predictionCol="prediction", metricName="f1")
+evaluator = MulticlassClassificationEvaluator(labelCol="AuthorNum", predictionCol="prediction", metricName="r2")
 lr_accuracy = evaluator.evaluate(predict_test)
 print("Accuracy of LogisticRegression is = %g"% (lr_accuracy))
 
