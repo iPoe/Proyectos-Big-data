@@ -117,3 +117,15 @@ evaluator = MulticlassClassificationEvaluator(labelCol="AuthorNum", predictionCo
 lr_accuracy = evaluator.evaluate(predict_test)
 print("Accuracy of LogisticRegression is = %g"% (lr_accuracy))
 
+
+
+#Clasificador decission tree
+from pyspark.ml.classification import DecisionTreeClassifier
+dt = DecisionTreeClassifier(labelCol="AuthorNum", featuresCol="features")
+dt_model = dt.fit(train)
+dt_prediction = dt_model.transform(test)
+
+dt_accuracy = evaluator.evaluate(dt_prediction)
+print("Accuracy of DecisionTreeClassifier is = %g"% (dt_accuracy))
+print("Test Error of DecisionTreeClassifier = %g " % (1.0 - dt_accuracy))
+
