@@ -98,7 +98,7 @@ cols.remove("AuthorNum")
 assembler = VectorAssembler(inputCols=cols,outputCol="features")
 # Now let us use the transform method to transform our dataset
 data=assembler.transform(data)
-data.select("features").show(truncate=False)
+#data.select("features").show(truncate=False)
 
 train, test = data.randomSplit([0.8, 0.2], seed=12345)
 
