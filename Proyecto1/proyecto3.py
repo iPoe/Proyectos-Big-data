@@ -100,7 +100,7 @@ assembler = VectorAssembler(inputCols=cols,outputCol="features")
 data=assembler.transform(data)
 #data.select("features").show(truncate=False)
 
-train, test = data.randomSplit([0.8, 0.2], seed=12345)
+train, test = data.randomSplit([0.8, 0.2])
 
 lr = LogisticRegression(labelCol="AuthorNum", featuresCol="features",maxIter=10)
 
@@ -113,7 +113,7 @@ lrModel = lr.fit(train)
 predict_train=lrModel.transform(train)
 predict_test=lrModel.transform(test)
 
-evaluator = MulticlassClassificationEvaluator(labelCol="AuthorNum", predictionCol="prediction", metricName="f1")
+evaluator = MulticlassClassificationEvaluator(labelCol="AuthorNum", predictionCol="prediction", metricName="accuracy")
 lr_accuracy = evaluator.evaluate(predict_test)
 print("F1 score of LogisticRegression is = %g"% (lr_accuracy))
 
