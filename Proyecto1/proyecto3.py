@@ -25,10 +25,10 @@ data = spark.read.format("csv").option("header","true").option("inferSchema", "t
 print("Registros:",data.count(),", Atributos:",len(data.columns))
 
 #Tipo de los atributos
-print(data.printSchema())
+data.printSchema()
 
 # Se revisa si existen nulos en alguno de los atributos del dataset
-print(data.select([count(when(isnan(c),c)).alias(c) for c in data.columns]).toPandas().head())
+data.select([count(when(isnan(c),c)).alias(c) for c in data.columns]).toPandas().head()
 
 #Descripcion de los atributos
 print(data.describe().select("Summary","F1","F2","F3","F4","F5").show())
@@ -41,6 +41,12 @@ print(pd.corr())
 #Diagrama de cajas para verificar datos atipicos
 #plt.boxplot((pd['F1'],pd['F2'],pd['F3'],pd['F4'],pd['F5'],pd['F6'],pd['F7'],pd['F8'],pd['F9'],pd['F10']))
 #plt.show()
+import pyspark.sql.functions as F
+
+df1 = data.groupby('Author').agg(F.expr('percentile(F1, array(0.25))')[0].alias('%25'),
+                             F.expr('percentile(F1, array(0.50))')[0].alias('%50'),
+                             F.expr('percentile(F1, array(0.75))')[0].alias('%75'))
+df1.show()
 
 #Distribucion del atributo clasificador
 data.groupby("Author").count().show()
@@ -70,7 +76,7 @@ data.groupby("AuthorNum").count().show()
 A = data.filter(data.AuthorNum == 0.0).sample(fraction=0.9)
 #A.groupby("AuthorNum").count().show()
 F = data.filter(col("AuthorNum") == 1.0).withColumn("dummy", explode(array([lit(x) for x in range(2)]))).drop('dummy')
-E = data.filter(col("AuthorNum") == 1.0).withColumn("dummy", explode(array([lit(x) for x in range(3)]))).drop('dummy')
+E = data.filter(col("AuthorNum") == 2.0).withColumn("dummy", explode(array([lit(x) for x in range(3)]))).drop('dummy')
 I = data.filter(col("AuthorNum") == 3.0).withColumn("dummy", explode(array([lit(x) for x in range(3)]))).drop('dummy')
 X = data.filter(col("AuthorNum") == 4.0).withColumn("dummy", explode(array([lit(x) for x in range(5)]))).drop('dummy')
 H = data.filter(col("AuthorNum") == 5.0).withColumn("dummy", explode(array([lit(x) for x in range(5)]))).drop('dummy')
