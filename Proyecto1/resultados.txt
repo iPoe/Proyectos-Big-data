@@ -17,6 +17,17 @@ Accuracy of LogisticRegression is = 0.495556
 Accuracy of DecisionTreeClassifier is = 0.563455
 Test Error of DecisionTreeClassifier = 0.436545 
 Accuracy of RandomForestClassifier is = 0.563455
-Test Error of RandomForestClassifier  = 0.436545 
+Test Error of RandomForestClassifier  = 0.436545
+
+
+#4to intento de tunning (lr iterations = 500)
+Accuracy of LogisticRegression is = 0.496975
+Accuracy of DecisionTreeClassifier is = 0.563356
+Test Error of DecisionTreeClassifier = 0.436644 
+Accuracy of RandomForestClassifier is = 0.563356
+Test Error of RandomForestClassifier  = 0.436644 
+
+
+
 
 
