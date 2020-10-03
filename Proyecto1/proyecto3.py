@@ -119,7 +119,7 @@ print("F1 score of LogisticRegression is = %g"% (lr_accuracy))
 
 
 # instantiate the One Vs Rest Classifier.
-ovr = OneVsRest(classifier=lr)
+ovr = OneVsRest(classifier=lr,labelCol='AuthorNum',featuresCol='features')
 
 # train the multiclass model.
 ovrModel = ovr.fit(train)
