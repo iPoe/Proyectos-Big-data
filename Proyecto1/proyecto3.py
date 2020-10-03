@@ -78,9 +78,9 @@ H = data.filter(col("AuthorNum") == 5.0).withColumn("dummy", explode(array([lit(
 G = data.filter(col("AuthorNum") == 6.0).withColumn("dummy", explode(array([lit(x) for x in range(6)]))).drop('dummy')
 D = data.filter(col("AuthorNum") == 7.0).withColumn("dummy", explode(array([lit(x) for x in range(7)]))).drop('dummy')
 Y = data.filter(col("AuthorNum") == 8.0).withColumn("dummy", explode(array([lit(x) for x in range(10)]))).drop('dummy')
-C = data.filter(col("AuthorNum") == 9.0).withColumn("dummy", explode(array([lit(x) for x in range(25)]))).drop('dummy')
-W = data.filter(col("AuthorNum") == 10.0).withColumn("dummy", explode(array([lit(x) for x in range(57)]))).drop('dummy')
-B = data.filter(col("AuthorNum") == 11.0).withColumn("dummy", explode(array([lit(x) for x in range(500)]))).drop('dummy')
+C = data.filter(col("AuthorNum") == 9.0).withColumn("dummy", explode(array([lit(x) for x in range(10)]))).drop('dummy')
+W = data.filter(col("AuthorNum") == 10.0).withColumn("dummy", explode(array([lit(x) for x in range(10)]))).drop('dummy')
+B = data.filter(col("AuthorNum") == 11.0).withColumn("dummy", explode(array([lit(x) for x in range(10)]))).drop('dummy')
 
 #Se juntan todas las categorias balanceadas
 data = A.union(B).union(C).union(D).union(E).union(F).union(G).union(H).union(I).union(W).union(Y).union(X)
@@ -102,7 +102,7 @@ data=assembler.transform(data)
 
 train, test = data.randomSplit([0.8, 0.2], seed=12345)
 
-lr = LogisticRegression(labelCol="AuthorNum", featuresCol="features",maxIter=10,elasticNetParam=0.8,regParam=0.3)
+lr = LogisticRegression(labelCol="AuthorNum", featuresCol="features",maxIter=10)
 
 # Fit the model
 lrModel = lr.fit(train)
