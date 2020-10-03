@@ -115,7 +115,7 @@ predict_test=lrModel.transform(test)
 
 evaluator = MulticlassClassificationEvaluator(labelCol="AuthorNum", predictionCol="prediction", metricName="f1")
 lr_accuracy = evaluator.evaluate(predict_test)
-print("Accuracy of LogisticRegression is = %g"% (lr_accuracy))
+print("F1 score of LogisticRegression is = %g"% (lr_accuracy))
 
 from pyspark.ml.tuning import CrossValidator, ParamGridBuilder
 
