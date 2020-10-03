@@ -133,7 +133,7 @@ crossval = CrossValidator(estimator=lr,
 model_lr = crossval.fit(train)
 predictions_lr = model_lr.transform(test)
 
-evaluator.evaluate(predictions_lr)
+print(evaluator.evaluate(predictions_lr))
 
 
 #Modelo 2
