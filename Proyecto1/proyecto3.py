@@ -28,7 +28,7 @@ print("Registros:",data.count(),", Atributos:",len(data.columns))
 data.printSchema()
 
 # Se revisa si existen nulos en alguno de los atributos del dataset
-data.select([count(when(isnan(c),c)).alias(c) for c in data.columns]).toPandas().head()
+print(data.select([count(when(isnan(c),c)).alias(c) for c in data.columns]).toPandas().head())
 
 #Descripcion de los atributos
 print(data.describe().select("Summary","F1","F2","F3","F4","F5").show())
@@ -36,17 +36,13 @@ print(data.describe().select("Summary","F6","F7","F8","F9","F10").show())
 
 #Se verifica la correlacion entre los atributos
 pd = data.toPandas()
+print("CORRELATION")
 print(pd.corr())
 
 #Diagrama de cajas para verificar datos atipicos
 #plt.boxplot((pd['F1'],pd['F2'],pd['F3'],pd['F4'],pd['F5'],pd['F6'],pd['F7'],pd['F8'],pd['F9'],pd['F10']))
 #plt.show()
-import pyspark.sql.functions as F
 
-df1 = data.groupby('Author').agg(F.expr('percentile(F1, array(0.25))')[0].alias('%25'),
-                             F.expr('percentile(F1, array(0.50))')[0].alias('%50'),
-                             F.expr('percentile(F1, array(0.75))')[0].alias('%75'))
-df1.show()
 
 #Distribucion del atributo clasificador
 data.groupby("Author").count().show()
