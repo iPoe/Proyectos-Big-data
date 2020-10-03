@@ -131,7 +131,7 @@ print("Test Error of DecisionTreeClassifier = %g " % (1.0 - dt_accuracy))
 #Modelo 3
 
 from pyspark.ml.classification import NaiveBayes
-nb = NaiveBayes(labelCol="Outcome",featuresCol="features")
+nb = NaiveBayes(labelCol="AuthorNum",featuresCol="features")
 nb_model = nb.fit(train)
 nb_prediction = nb_model.transform(test)
 nb_accuracy = evaluator.evaluate(nb_prediction)
@@ -139,7 +139,7 @@ print("Accuracy of Naive bayes is = %g"%(nb_accuracy))
 
 #Modelo 4
 from pyspark.ml.classification import GBTClassifier
-gbt = GBTClassifier(labelCol="Outcome", featuresCol="features",maxIter=10)
+gbt = GBTClassifier(labelCol="AuthorNum", featuresCol="features",maxIter=10)
 gbt_model = gbt.fit(train)
 gbt_prediction = gbt_model.transform(test)
 #gbt_prediction.select("prediction", "Survived", "features").show()
