@@ -21,7 +21,7 @@ data = spark.read.format("csv").option("header","true").option("inferSchema", "t
 #PRIMER PUNTO
 #DESCRIPCION DEL CONJUNTO DE DATOS INICIAL
 #Imprime la cantidad de registros y atributos respectivamente
-
+"""
 print("Registros:",data.count(),", Atributos:",len(data.columns))
 
 #Tipo de los atributos
@@ -47,26 +47,26 @@ print(pd.corr())
 #Distribucion del atributo clasificador
 data.groupby("Author").count().show()
 
-
+"""
 #####################################################################################################
 #COMIENZA EL SEGUNDO PUNTO
 #LIMPIEZA DE LOS DATOS
 
 #Como se puede ver en los diagramas de cajas, el atributo F2 tiene datos que son demasiado atipicos
 #Estos registros se eliminaran
-print("LIMPIEZA DE LOS DATOS")
+#print("LIMPIEZA DE LOS DATOS")
 data = data.filter(data.F2<350)
-print("Datos Atipicos F2 Eliminados:",data.count())
+#print("Datos Atipicos F2 Eliminados:",data.count())
 
 #Se elimina el atributo F10
 data = data.drop('F10')
-print("Atributo F10 Eliminado:",data.columns)
+#print("Atributo F10 Eliminado:",data.columns)
 
 #Convertir los atributos categoricos a numericos
 indexer = StringIndexer(inputCol="Author", outputCol="AuthorNum")
 data = indexer.fit(data).transform(data)
 data = data.drop('Author')
-data.groupby("AuthorNum").count().show()
+#data.groupby("AuthorNum").count().show()
 
 #Se balancea cada categoria
 A = data.filter(data.AuthorNum == 0.0).sample(fraction=0.9)
@@ -86,11 +86,12 @@ B = data.filter(col("AuthorNum") == 11.0).withColumn("dummy", explode(array([lit
 #Se juntan todas las categorias balanceadas
 data = A.union(B).union(C).union(D).union(E).union(F).union(G).union(H).union(I).union(W).union(Y).union(X)
 data.groupby("AuthorNum").count().show()
-print("Numero de Registros Dataset Limpio:",data.count(),", Atributos:",len(data.columns))
+#print("Numero de Registros Dataset Limpio:",data.count(),", Atributos:",len(data.columns))
 
 #####################################################################################################
 #COMIENZA PUNTO 3
-"""
+#Entrenamiento de modelos:
+#Primero modelo: Regresión logistica
 cols=data.columns
 cols.remove("AuthorNum")
 # Let us import the vector assembler
@@ -108,12 +109,12 @@ lr = LogisticRegression(labelCol="AuthorNum", featuresCol="features",maxIter=10)
 lrModel = lr.fit(train)
 
 # Print the coefficients and intercept for multinomial logistic regression
-print("Coefficients:" + str(lrModel.coefficientMatrix))
+#print("Coefficients:" + str(lrModel.coefficientMatrix))
 
 predict_train=lrModel.transform(train)
 predict_test=lrModel.transform(test)
 
 evaluator = MulticlassClassificationEvaluator(labelCol="AuthorNum", predictionCol="prediction", metricName="accuracy")
 lr_accuracy = evaluator.evaluate(predict_test)
-print("Accuracy of LogisticRegression is = %g"% (lr_accuracy))"""
+print("Accuracy of LogisticRegression is = %g"% (lr_accuracy))
 
