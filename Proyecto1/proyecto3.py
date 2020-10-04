@@ -97,22 +97,20 @@ cols.remove("AuthorNum")
 
 assembler = VectorAssembler(inputCols=cols,outputCol="features")
 # Now let us use the transform method to transform our dataset
-data2 = data
 data=assembler.transform(data)
 #data.select("features").show(truncate=False)
-train2, test2 = data2.randomSplit([0.8, 0.2])
 train, test = data.randomSplit([0.8, 0.2])
 
-lr = LogisticRegression(labelCol='AuthorNum',maxIter=10,features="F1,F2, F3, F4, F5, F6, F7, F8, F9")
+lr = LogisticRegression(labelCol='AuthorNum',maxIter=10,features="features")
 
 # Fit the model
-lrModel = lr.fit(train2)
+lrModel = lr.fit(train)
 
 # Print the coefficients and intercept for multinomial logistic regression
 #print("Coefficients:" + str(lrModel.coefficientMatrix))
 
-predict_train=lrModel.transform(train2)
-predict_test=lrModel.transform(test2)
+predict_train=lrModel.transform(train)
+predict_test=lrModel.transform(test)
 
 evaluator = MulticlassClassificationEvaluator(labelCol="AuthorNum", predictionCol="prediction", metricName="accuracy")
 lr_accuracy = evaluator.evaluate(predict_test)
@@ -123,20 +121,20 @@ print("RMSE: %f" % trainingSummary.rootMeanSquaredError)
 print("r2: %f" % trainingSummary.r2)
 
 # instantiate the One Vs Rest Classifier.
-ovr = OneVsRest(classifier=lr,labelCol='AuthorNum')
+# ovr = OneVsRest(classifier=lr,labelCol='AuthorNum')
 
-# train the multiclass model.
-ovrModel = ovr.fit(train)
+# # train the multiclass model.
+# ovrModel = ovr.fit(train)
 
-# score the model on test data.
-predictions_ovr = ovrModel.transform(test)
+# # score the model on test data.
+# predictions_ovr = ovrModel.transform(test)
 
-# obtain evaluator.
-evaluator_ovr = MulticlassClassificationEvaluator(metricName="accuracy")
+# # obtain evaluator.
+# evaluator_ovr = MulticlassClassificationEvaluator(metricName="accuracy")
 
-# compute the classification error on test data.
-accuracy_ovr = evaluator.evaluate(predictions_ovr)
-print("accuracy of LogisticRegression with ovr is = %g"% (accuracy_ovr))
+# # compute the classification error on test data.
+# accuracy_ovr = evaluator.evaluate(predictions_ovr)
+# print("accuracy of LogisticRegression with ovr is = %g"% (accuracy_ovr))
 
 # from pyspark.ml.tuning import CrossValidator, ParamGridBuilder
 
