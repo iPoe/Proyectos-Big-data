@@ -162,7 +162,7 @@ print("Accuracy Score of DecisionTreeClassifier is = %g"% (dt_accuracy))
 #predictionAndLabels = dt_prediction.select(['prediction', 'AuthorNum'])
 preds_and_labels = dt_prediction.select(['prediction','AuthorNum']).withColumn('AuthorNum', F.col('AuthorNum').cast(FloatType())).orderBy('prediction')
 preds_and_labels = preds_and_labels.select(['prediction','AuthorNum'])
-tp = predictionAndLabels.rdd.map(tuple)
+tp = preds_and_labels.rdd.map(tuple)
 metrics = MulticlassMetrics(tp)
 print(metrics.confusionMatrix().toArray())
 
