@@ -180,9 +180,20 @@ evaluator = MulticlassClassificationEvaluator(labelCol="AuthorNum", predictionCo
 #Modelo 4
 
 from pyspark.ml.classification import GBTClassifier
-gbt = GBTClassifier(labelCol="AuthorNum",maxIter=10)
-gbt_model = gbt.fit(train)
-gbt_prediction = gbt_model.transform(test)
+gbt = GBTClassifier(maxIter=10)
+
+ovr = OneVsRest(classifier=gbt,featuresCol="features",labelCol="AuthorNum",parallelism=2)
+
+ovrModel = ovr.fit(train)
+
+evaluator = MulticlassClassificationEvaluator(metricName="accuracy")
+
+predictions = ovrModel.transform(test)
+
+print("Accuracy: {}".format(evaluator.evaluate(predictions)))
+
+# gbt_model = gbt.fit(train)
+# gbt_prediction = gbt_model.transform(test)
 print(evaluator.evaluate(gbt_prediction))
 
 # #gbt_prediction.select("prediction", "Survived", "features").show()
@@ -204,12 +215,12 @@ print(evaluator.evaluate(gbt_prediction))
 
 
 #Modelo 4 LSVC
-svm = LinearSVC()
-ovr = OneVsRest(classifier=svm,featuresCol="features",labelCol="AuthorNum",parallelism=2)
-ovrModel = ovr.fit(train)
+# svm = LinearSVC()
+# ovr = OneVsRest(classifier=svm,featuresCol="features",labelCol="AuthorNum",parallelism=2)
+# ovrModel = ovr.fit(train)
 
-evaluator = MulticlassClassificationEvaluator(metricName="accuracy")
+# evaluator = MulticlassClassificationEvaluator(metricName="accuracy")
 
-predictions = ovrModel.transform(test)
+# predictions = ovrModel.transform(test)
 
-print("Accuracy: {}".format(evaluator.evaluate(predictions)))
+# print("Accuracy: {}".format(evaluator.evaluate(predictions)))
