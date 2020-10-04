@@ -176,32 +176,36 @@ tp = preds_and_labels.rdd.map(tuple)
 metrics = MulticlassMetrics(tp)
 aux = metrics.confusionMatrix().toArray()
 aux = [map(int,x) for x in aux]
-print(metrics.confusionMatrix().toArray())
-print(aux)
+#print(metrics.confusionMatrix().toArray())
+for l in aux:
+	print(l)
 
 
 
 
 
 #Random forest
-# import pyspark.sql.functions as F
-# from pyspark.sql.types import FloatType
-# from pyspark.ml.classification import RandomForestClassifier
-# from pyspark.mllib.evaluation import MulticlassMetrics
+import pyspark.sql.functions as F
+from pyspark.sql.types import FloatType
+from pyspark.ml.classification import RandomForestClassifier
+from pyspark.mllib.evaluation import MulticlassMetrics
 
 
-# rf = RandomForestClassifier(labelCol="AuthorNum", featuresCol="features",numTrees=10,subsamplingRate=1,maxDepth=10)
-# rf_model = rf.fit(train)
-# rf_prediction = rf_model.transform(test)
+rf = RandomForestClassifier(labelCol="AuthorNum", featuresCol="features",numTrees=10,subsamplingRate=1,maxDepth=10)
+rf_model = rf.fit(train)
+rf_prediction = rf_model.transform(test)
 
-# evaluator = MulticlassClassificationEvaluator(labelCol="AuthorNum",
-#                                               predictionCol="prediction", metricName="accuracy")
+evaluator = MulticlassClassificationEvaluator(labelCol="AuthorNum",
+                                              predictionCol="prediction", metricName="accuracy")
 
-# rf_accuracy = evaluator.evaluate(rf_prediction)
-#print("Accuracy Score of RandomForestClassifier is = {}".format(rf_accuracy))
-# preds_and_labels = rf_prediction.select(['prediction','AuthorNum']).withColumn('label', F.col('AuthorNum').cast(FloatType())).orderBy('prediction')
-# preds_and_labels = preds_and_labels.select(['prediction','AuthorNum'])
-# tp = preds_and_labels.rdd.map(tuple)
-# metrics = MulticlassMetrics(tp)
-# salida = map(int,metrics.confusionMatrix().toArray())
-# print(salida)
+rf_accuracy = evaluator.evaluate(rf_prediction)
+print("Accuracy Score of RandomForestClassifier is = {}".format(rf_accuracy))
+preds_and_labels = rf_prediction.select(['prediction','AuthorNum']).withColumn('label', F.col('AuthorNum').cast(FloatType())).orderBy('prediction')
+preds_and_labels = preds_and_labels.select(['prediction','AuthorNum'])
+tp = preds_and_labels.rdd.map(tuple)
+metrics = MulticlassMetrics(tp)
+aux = metrics.confusionMatrix().toArray()
+aux = [map(int,x) for x in aux]
+#print(metrics.confusionMatrix().toArray())
+for l in aux:
+	print(l)
