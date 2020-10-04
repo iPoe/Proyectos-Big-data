@@ -145,7 +145,7 @@ print("Accuracy score of LogisticRegression is = %g"% (lr_accuracy))
 
 #Modelo 2
 from pyspark.ml.classification import DecisionTreeClassifier
-dt = DecisionTreeClassifier(labelCol="AuthorNum", featuresCol="features",maxDepth=10)
+dt = DecisionTreeClassifier(labelCol="AuthorNum", featuresCol="features",maxDepth=20)
 dt_model = dt.fit(train)
 dt_prediction = dt_model.transform(test)
 

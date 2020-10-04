@@ -101,4 +101,9 @@ Accuracy score of LogisticRegression is = 0.508263
 Accuracy Score of DecisionTreeClassifier is = 0.565936
 Accuracy Score of RandomForestClassifier is = 0.920911
 
+#19 rf dt maxdepth in 10
+Accuracy score of LogisticRegression is = 0.507432
+Accuracy Score of DecisionTreeClassifier is = 0.838007
+Accuracy Score of RandomForestClassifier is = 0.926014
+
 
