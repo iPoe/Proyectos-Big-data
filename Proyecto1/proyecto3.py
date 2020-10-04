@@ -180,8 +180,8 @@ evaluator = MulticlassClassificationEvaluator(labelCol="AuthorNum", predictionCo
 #Modelo 4
 
 from pyspark.mllib.tree import GradientBoostedTrees, GradientBoostedTreesModel
-model = GradientBoostedTrees.trainClassifier(trainingData,
-	categoricalFeaturesInfo={}, numIterations=3)
+# model = GradientBoostedTrees.trainClassifier(trainingData,
+# 	categoricalFeaturesInfo={}, numIterations=3)
 
 model = GradientBoostedTrees.trainRegressor(sc.parallelize(train), {}, numIterations=10)
 
