@@ -64,7 +64,7 @@ data = data.filter(data.F2<350)
 
 #Se elimina el atributo F10
 #data = data.drop('F6')
-data = data.drop('F10')
+#data = data.drop('F10')
 #print("Atributo F10 Eliminado:",data.columns)
 
 #print("Conversion de atributos categoricos a numericos")
@@ -162,7 +162,7 @@ print("Accuracy Score of DecisionTreeClassifier is = %g"% (dt_accuracy))
 #Random forest
 
 from pyspark.ml.classification import RandomForestClassifier
-rf = RandomForestClassifier(labelCol="AuthorNum", featuresCol="features",numTrees=20)
+rf = RandomForestClassifier(labelCol="AuthorNum", featuresCol="features",numTrees=50)
 rf_model = rf.fit(train)
 rf_prediction = rf_model.transform(test)
 
