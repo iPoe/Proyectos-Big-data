@@ -77,14 +77,14 @@ A = data.filter(data.AuthorNum == 0.0)
 F = data.filter(col("AuthorNum") == 1.0).withColumn("dummy", explode(array([lit(x) for x in range(2)]))).drop('dummy')
 E = data.filter(col("AuthorNum") == 2.0).withColumn("dummy", explode(array([lit(x) for x in range(3)]))).drop('dummy')
 I = data.filter(col("AuthorNum") == 3.0).withColumn("dummy", explode(array([lit(x) for x in range(3)]))).drop('dummy')
-X = data.filter(col("AuthorNum") == 4.0).withColumn("dummy", explode(array([lit(x) for x in range(5)]))).drop('dummy')
-H = data.filter(col("AuthorNum") == 5.0).withColumn("dummy", explode(array([lit(x) for x in range(5)]))).drop('dummy')
-G = data.filter(col("AuthorNum") == 6.0).withColumn("dummy", explode(array([lit(x) for x in range(5)]))).drop('dummy')
-D = data.filter(col("AuthorNum") == 7.0).withColumn("dummy", explode(array([lit(x) for x in range(5)]))).drop('dummy')
-Y = data.filter(col("AuthorNum") == 8.0).withColumn("dummy", explode(array([lit(x) for x in range(5)]))).drop('dummy')
-C = data.filter(col("AuthorNum") == 9.0).withColumn("dummy", explode(array([lit(x) for x in range(5)]))).drop('dummy')
-W = data.filter(col("AuthorNum") == 10.0).withColumn("dummy", explode(array([lit(x) for x in range(5)]))).drop('dummy')
-B = data.filter(col("AuthorNum") == 11.0).withColumn("dummy", explode(array([lit(x) for x in range(5)]))).drop('dummy')
+X = data.filter(col("AuthorNum") == 4.0).withColumn("dummy", explode(array([lit(x) for x in range(3)]))).drop('dummy')
+H = data.filter(col("AuthorNum") == 5.0).withColumn("dummy", explode(array([lit(x) for x in range(3)]))).drop('dummy')
+G = data.filter(col("AuthorNum") == 6.0).withColumn("dummy", explode(array([lit(x) for x in range(3)]))).drop('dummy')
+D = data.filter(col("AuthorNum") == 7.0).withColumn("dummy", explode(array([lit(x) for x in range(3)]))).drop('dummy')
+Y = data.filter(col("AuthorNum") == 8.0).withColumn("dummy", explode(array([lit(x) for x in range(3)]))).drop('dummy')
+C = data.filter(col("AuthorNum") == 9.0).withColumn("dummy", explode(array([lit(x) for x in range(3)]))).drop('dummy')
+W = data.filter(col("AuthorNum") == 10.0).withColumn("dummy", explode(array([lit(x) for x in range(3)]))).drop('dummy')
+B = data.filter(col("AuthorNum") == 11.0).withColumn("dummy", explode(array([lit(x) for x in range(3)]))).drop('dummy')
 
 #Se juntan todas las categorias balanceadas
 data = A.union(B).union(C).union(D).union(E).union(F).union(G).union(H).union(I).union(W).union(Y).union(X)
@@ -111,20 +111,20 @@ train2, test2 = raw_data.randomSplit([0.8, 0.2])
 lr = LogisticRegression(labelCol="AuthorNum",maxIter=10,featuresCol="features")
 
 # Fit the model
-lrModel = lr.fit(train2)
+lrModel = lr.fit(train)
 
 # Print the coefficients and intercept for multinomial logistic regression
 #print("Coefficients:" + str(lrModel.coefficientMatrix))
 
-predict_test=lrModel.transform(test2)
+predict_test=lrModel.transform(test)
 
 evaluator = MulticlassClassificationEvaluator(labelCol="AuthorNum", predictionCol="prediction", metricName="f1")
 lr_accuracy = evaluator.evaluate(predict_test)
-print("Accuracy score of LogisticRegression is = %g"% (lr_accuracy))
+print("F1 score of LogisticRegression is = %g"% (lr_accuracy))
 
 trainingSummary = lrModel.summary
 #print("F: %f" % trainingSummary.fMeasureByLabel)
-print("F1 Score of lr: %f" % trainingSummary.accuracy)
+#print("F1 Score of lr: %f" % trainingSummary.accuracy)
 #print("f measure of lr: {}".format(trainingSummary.fMeasureByLabel))
 #print("Recall by label of lr: {}".format(trainingSummary.recallByLabel))
 
@@ -144,30 +144,14 @@ print("F1 Score of lr: %f" % trainingSummary.accuracy)
 # accuracy_ovr = evaluator.evaluate(predictions_ovr)
 # print("accuracy of LogisticRegression with ovr is = %g"% (accuracy_ovr))
 
-# from pyspark.ml.tuning import CrossValidator, ParamGridBuilder
 
-# paramGrid = (ParamGridBuilder()
-#   .addGrid(lr.regParam, [0.01, 0.1, 0.5]) \
-#   .addGrid(lr.maxIter, [10, 20, 50]) \
-#   .addGrid(lr.elasticNetParam, [0.0, 0.8]) \
-#   .build())
-
-# crossval = CrossValidator(estimator=lr,
-#                           estimatorParamMaps=paramGrid,
-#                           evaluator=evaluator,
-#                           numFolds=3)
-
-# model_lr = crossval.fit(train)
-# predictions_lr = model_lr.transform(test)
-
-# print(evaluator.evaluate(predictions_lr))
 
 
 #Modelo 2
 from pyspark.ml.classification import DecisionTreeClassifier
 dt = DecisionTreeClassifier(labelCol="AuthorNum", featuresCol="features")
-dt_model = dt.fit(train2)
-dt_prediction = dt_model.transform(test2)
+dt_model = dt.fit(train)
+dt_prediction = dt_model.transform(test)
 
 dt_accuracy = evaluator.evaluate(dt_prediction)
 print("F1 Score of DecisionTreeClassifier is = %g"% (dt_accuracy))
@@ -197,8 +181,8 @@ print("F1 Score of DecisionTreeClassifier is = %g"% (dt_accuracy))
 
 from pyspark.ml.classification import RandomForestClassifier
 rf = DecisionTreeClassifier(labelCol="AuthorNum", featuresCol="features")
-rf_model = rf.fit(train2)
-rf_prediction = rf_model.transform(test2)
+rf_model = rf.fit(train)
+rf_prediction = rf_model.transform(test)
 
 rf_accuracy = evaluator.evaluate(rf_prediction)
 print("F1 Score of RandomForestClassifier is = %g"% (rf_accuracy))
