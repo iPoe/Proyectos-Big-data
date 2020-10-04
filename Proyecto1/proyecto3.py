@@ -131,7 +131,7 @@ train, test = data.randomSplit([0.8, 0.2],seed=20)
 raw_data=assembler.transform(raw_data)
 train2, test2 = raw_data.randomSplit([0.8, 0.2])
 
-lr = LogisticRegression(labelCol="AuthorNum",maxIter=10,featuresCol="features",family="multinomial",elasticNetParam=1.0)
+lr = LogisticRegression(labelCol="AuthorNum",maxIter=50,featuresCol="features",family="multinomial",elasticNetParam=0.8,regParam=0.1)
 
 
 
@@ -146,11 +146,7 @@ evaluator = MulticlassClassificationEvaluator(labelCol="AuthorNum",
 lr_accuracy = evaluator.evaluate(predict_test)
 print("Accuracy score of LogisticRegression is = %g"% (lr_accuracy))
 #Matriz de confusion
-preds_and_labels = predict_test.select(['prediction','AuthorNum']).withColumn('label', F.col('AuthorNum').cast(FloatType())).orderBy('prediction')
-preds_and_labels = preds_and_labels.select(['prediction','AuthorNum'])
-tp = preds_and_labels.rdd.map(tuple)
-metrics = MulticlassMetrics(tp)
-print(metrics.confusionMatrix().toArray())
+
 
 
 #Modelo 2
