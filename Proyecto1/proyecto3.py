@@ -105,36 +105,19 @@ data=assembler.transform(data)
 #data.select("features").show(truncate=False)
 train, test = data.randomSplit([0.8, 0.2])
 
-raw_data_size = float(train.select("AuthorNum").count())
+raw_data=assembler.transform(raw_data)
 train2, test2 = raw_data.randomSplit([0.8, 0.2])
-numA = train2.select("AuthorNum").where('AuthorNum == 0').count()
-numF = train2.select("AuthorNum").where('AuthorNum == 1').count()
-numE = train2.select("AuthorNum").where('AuthorNum == 2').count()
-numI = train2.select("AuthorNum").where('AuthorNum == 3').count()
-numX = train2.select("AuthorNum").where('AuthorNum == 4').count()
-numH = train2.select("AuthorNum").where('AuthorNum == 5').count()
-numG = train2.select("AuthorNum").where('AuthorNum == 6').count()
-numD = train2.select("AuthorNum").where('AuthorNum == 7').count()
-numY = train2.select("AuthorNum").where('AuthorNum == 8').count()
-numC = train2.select("AuthorNum").where('AuthorNum == 9').count()
-numW = train2.select("AuthorNum").where('AuthorNum == 10').count()
-numB = train2.select("AuthorNum").where('AuthorNum == 11').count()
-aux_list = [numA,numF,numE,numI,numX,numH,numG,numD,numY,numC,numW,numB]
-i , thresh_list = 0,[]
-while i!=11:
-	thresh_list.append((float(aux_list[i])/float(raw_data_size)))
-	i+=1
-print(thresh_list)
-lr = LogisticRegression(labelCol="AuthorNum",maxIter=10,featuresCol="features",thresholds=thresh_list)
+
+lr = LogisticRegression(labelCol="AuthorNum",maxIter=10,featuresCol="features")
 
 # Fit the model
-lrModel = lr.fit(train)
+lrModel = lr.fit(train2)
 
 # Print the coefficients and intercept for multinomial logistic regression
 #print("Coefficients:" + str(lrModel.coefficientMatrix))
 
 predict_train=lrModel.transform(train)
-predict_test=lrModel.transform(test)
+predict_test=lrModel.transform(test2)
 
 evaluator = MulticlassClassificationEvaluator(labelCol="AuthorNum", predictionCol="prediction", metricName="accuracy")
 lr_accuracy = evaluator.evaluate(predict_test)
