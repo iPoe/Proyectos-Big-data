@@ -124,7 +124,7 @@ lr_accuracy = evaluator.evaluate(predict_test)
 print("Accuracy score of LogisticRegression is = %g"% (lr_accuracy))
 
 trainingSummary = lrModel.summary
-print("F: %f" % trainingSummary.fMeasureByLabel)
+#print("F: %f" % trainingSummary.fMeasureByLabel)
 print("accuracy: %f" % trainingSummary.accuracy)
 
 # instantiate the One Vs Rest Classifier.
