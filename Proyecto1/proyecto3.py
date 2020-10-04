@@ -144,6 +144,8 @@ print("Accuracy score of LogisticRegression is = %g"% (lr_accuracy))
 
 
 #Modelo 2
+import pyspark.sql.functions as F
+from pyspark.sql.types import FloatType
 from pyspark.ml.classification import DecisionTreeClassifier
 from pyspark.mllib.evaluation import MulticlassMetrics
 dt = DecisionTreeClassifier(labelCol="AuthorNum", featuresCol="features",maxDepth=20)
@@ -157,8 +159,8 @@ dt_accuracy = evaluator.evaluate(dt_prediction)
 print("Accuracy Score of DecisionTreeClassifier is = %g"% (dt_accuracy))
 
 
-predictionAndLabels = dt_prediction.select(['prediction', 'AuthorNum'])
-
+#predictionAndLabels = dt_prediction.select(['prediction', 'AuthorNum'])
+preds_and_labels = predictions.select(['predictions','d']).withColumn('AuthorNum', F.col('d').cast(FloatType())).orderBy('prediction')
 tp = predictionAndLabels.rdd.map(tuple)
 metrics = MulticlassMetrics(tp)
 print(metrics.confusionMatrix().toArray())
