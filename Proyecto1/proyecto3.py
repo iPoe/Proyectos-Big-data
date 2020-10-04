@@ -137,7 +137,7 @@ paramGrid = (ParamGridBuilder()
 crossval = CrossValidator(estimator=lr,
                           estimatorParamMaps=paramGrid,
                           evaluator=evaluator,
-                          numFolds=10)
+                          numFolds=3)
 
 model_lr = crossval.fit(train)
 predictions_lr = model_lr.transform(test)
