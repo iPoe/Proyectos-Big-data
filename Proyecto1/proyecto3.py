@@ -131,7 +131,7 @@ train, test = data.randomSplit([0.8, 0.2],seed=20)
 raw_data=assembler.transform(raw_data)
 train2, test2 = raw_data.randomSplit([0.8, 0.2])
 
-lr = LogisticRegression(labelCol="AuthorNum",maxIter=50,featuresCol="features",family="multinomial",elasticNetParam=0.8,regParam=0.1)
+lr = LogisticRegression(labelCol="AuthorNum",maxIter=200,featuresCol="features",family="multinomial",elasticNetParam=0.8)
 
 
 
