@@ -20,7 +20,7 @@ data = spark.read.format("csv").option("header","true").option("inferSchema", "t
 #PRIMER PUNTO
 #DESCRIPCION DEL CONJUNTO DE DATOS INICIAL
 #Imprime la cantidad de registros y atributos respectivamente
-
+"""
 print("Registros Iniciales:",data.count(),", Atributos Iniciales:",len(data.columns))
 
 #Tipo de los atributos
@@ -48,23 +48,23 @@ print(pd.corr())
 print("Distribucion del atributo clasificador")
 data.groupby("Author").count().show()
 
-
+"""
 #####################################################################################################
 #COMIENZA EL SEGUNDO PUNTO
 #LIMPIEZA DE LOS DATOS
 
 #Como se puede ver en los diagramas de cajas, el atributo F2 tiene datos que son demasiado atipicos
 #Estos registros se eliminaran
-print("LIMPIEZA DE LOS DATOS")
+#print("LIMPIEZA DE LOS DATOS")
 data = data.filter(data.F2<350)
-print("Datos Demasiado Atipicos de F2 Eliminados:",data.count())
+#print("Datos Demasiado Atipicos de F2 Eliminados:",data.count())
 
 #Se elimina el atributo F10
 #data = data.drop('F6')
 #data = data.drop('F10')
 #print("Atributo F10 Eliminado:",data.columns)
 
-print("Conversion de atributos categoricos a numericos")
+#print("Conversion de atributos categoricos a numericos")
 indexer = StringIndexer(inputCol="Author", outputCol="AuthorNum")
 data = indexer.fit(data).transform(data)
 data = data.drop('Author')
