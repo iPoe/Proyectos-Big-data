@@ -174,7 +174,9 @@ preds_and_labels = dt_prediction.select(['prediction','AuthorNum']).withColumn('
 preds_and_labels = preds_and_labels.select(['prediction','AuthorNum'])
 tp = preds_and_labels.rdd.map(tuple)
 metrics = MulticlassMetrics(tp)
-print(metrics.confusionMatrix().toArray())
+salida = map(int,metrics.confusionMatrix().toArray())
+print(salida)
+
 
 
 
@@ -199,4 +201,5 @@ preds_and_labels = rf_prediction.select(['prediction','AuthorNum']).withColumn('
 preds_and_labels = preds_and_labels.select(['prediction','AuthorNum'])
 tp = preds_and_labels.rdd.map(tuple)
 metrics = MulticlassMetrics(tp)
-print(metrics.confusionMatrix().toArray())
+salida = map(int,metrics.confusionMatrix().toArray())
+print(salida)
