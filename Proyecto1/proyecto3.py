@@ -140,8 +140,7 @@ lrModel = lr.fit(train)
 
 predict_test=lrModel.transform(test)
 
-evaluator = MulticlassClassificationEvaluator(labelCol="AuthorNum",
-	predictionCol="prediction", metricName="accuracy")
+evaluator = MulticlassClassificationEvaluator(labelCol="AuthorNum",	predictionCol="prediction", metricName="accuracy")
 
 lr_accuracy = evaluator.evaluate(predict_test)
 print("Accuracy score of LogisticRegression is = %g"% (lr_accuracy))
@@ -159,8 +158,7 @@ dt = DecisionTreeClassifier(labelCol="AuthorNum", featuresCol="features",maxDept
 dt_model = dt.fit(train)
 dt_prediction = dt_model.transform(test)
 
-evaluator = MulticlassClassificationEvaluator(labelCol="AuthorNum",
-                                              predictionCol="prediction", metricName="accuracy")
+evaluator = MulticlassClassificationEvaluator(labelCol="AuthorNum",predictionCol="prediction", metricName="accuracy")
 
 dt_accuracy = evaluator.evaluate(dt_prediction)
 print("Accuracy Score of DecisionTreeClassifier is = %g"% (dt_accuracy))
