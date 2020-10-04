@@ -127,27 +127,6 @@ evaluator = MulticlassClassificationEvaluator(labelCol="AuthorNum", predictionCo
 # print("F1 score of LogisticRegression is = %g"% (lr_accuracy))
 
 
-from pyspark.ml.tuning import CrossValidator, ParamGridBuilder
-paramGrid = (ParamGridBuilder()
-  .addGrid(lr.regParam, [0.01, 0.1, 0.5]) \
-  .addGrid(lr.maxIter, [10, 20, 50]) \
-  .addGrid(lr.elasticNetParam, [0.0, 0.8]) \
-  .build())
-
-crossval = CrossValidator(estimator=lr,
-                          estimatorParamMaps=paramGrid,
-                          evaluator=evaluator,
-                          numFolds=3)
-
-model_lr = crossval.fit(train)
-predictions_lr = model_lr.transform(test)
-
-f1_grid = evaluator.evaluate(predictions_lr)
-
-
-print("F1 with grid: {}".format(f1_grid))
-
-
 # instantiate the One Vs Rest Classifier.
 # ovr = OneVsRest(classifier=lr,labelCol='AuthorNum')
 
