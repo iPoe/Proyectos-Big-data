@@ -46,4 +46,12 @@ F1 Score of RandomForestClassifier is = 0.524713
 
 
 #8vo sigue balance pero 9,10,11 con 5
+F1 score of LogisticRegression is = 0.491054
+F1 Score of DecisionTreeClassifier is = 0.524658
+F1 Score of RandomForestClassifier is = 0.524658
+
+#9no balanceo con formula de andres
+F1 score of LogisticRegression is = 0.510808
+F1 Score of DecisionTreeClassifier is = 0.547392
+F1 Score of RandomForestClassifier is = 0.547392
 
