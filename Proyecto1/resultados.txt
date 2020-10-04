@@ -80,4 +80,7 @@ Accuracy score of LogisticRegression is = 0.543566
 Accuracy Score of DecisionTreeClassifier is = 0.581085
 Accuracy Score of RandomForestClassifier is = 0.644031
 
-
+#15 1er balance propuesto por andres con drop f10
+Accuracy score of LogisticRegression is = 0.50227
+Accuracy Score of DecisionTreeClassifier is = 0.563309
+Accuracy Score of RandomForestClassifier is = 0.688078
