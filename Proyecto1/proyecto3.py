@@ -1,5 +1,4 @@
 import pyspark.sql.functions as F
-from pyspark import SparkContext, SparkConf
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import isnan, when, count, col, explode, array, lit
 from pyspark.ml.feature import StringIndexer
@@ -131,7 +130,7 @@ train, test = data.randomSplit([0.8, 0.2],seed=20)
 raw_data=assembler.transform(raw_data)
 train2, test2 = raw_data.randomSplit([0.8, 0.2])
 
-lr = LogisticRegression(labelCol="AuthorNum",maxIter=200,featuresCol="features",family="multinomial",elasticNetParam=0.8)
+lr = LogisticRegression(labelCol="AuthorNum",maxIter=1000,featuresCol="features",family="multinomial",elasticNetParam=0.8)
 
 
 
@@ -149,9 +148,9 @@ print("Accuracy score of LogisticRegression is = %g"% (lr_accuracy))
 
 
 #Modelo 2
-
-from pyspark.ml.classification import DecisionTreeClassifier
 import pyspark.sql.functions as F
+from pyspark.ml.classification import DecisionTreeClassifier
+from pyspark.sql.types import FloatType
 
 dt = DecisionTreeClassifier(labelCol="AuthorNum", featuresCol="features",maxDepth=20)
 dt_model = dt.fit(train)
@@ -175,6 +174,8 @@ print(metrics.confusionMatrix().toArray())
 
 from pyspark.ml.classification import RandomForestClassifier
 import pyspark.sql.functions as F
+from pyspark.sql.types import FloatType
+
 
 rf = RandomForestClassifier(labelCol="AuthorNum", featuresCol="features",numTrees=10,subsamplingRate=1,maxDepth=10)
 rf_model = rf.fit(train)
