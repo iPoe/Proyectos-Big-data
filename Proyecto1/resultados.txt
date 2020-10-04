@@ -28,8 +28,22 @@ Accuracy of RandomForestClassifier is = 0.563356
 Test Error of RandomForestClassifier  = 0.436644
 
 
-#5to intento no balance y conservar todas las col
+#5to intento no balance y conservar todas las col (Dt y RF no tenian el raw_data)
 Accuracy score of LogisticRegression is = 0.568224
 Accuracy of DecisionTreeClassifier is = 0.56491
 Accuracy of RandomForestClassifier is = 0.56491
+
+#6to intento no balance y conservar todas las col
+Accuracy score of LogisticRegression is = 0.563417
+accuracy: 0.561478
+Accuracy of DecisionTreeClassifier is = 0.605064
+Accuracy of RandomForestClassifier is = 0.605064
+
+#7mo intento balance a 3
+F1 score of LogisticRegression is = 0.499629
+F1 Score of DecisionTreeClassifier is = 0.524713
+F1 Score of RandomForestClassifier is = 0.524713
+
+
+#8vo sigue balance pero 9,10,11 con 5
 
