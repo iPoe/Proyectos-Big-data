@@ -128,8 +128,7 @@ train, test = data.randomSplit([0.8, 0.2],seed=20)
 raw_data=assembler.transform(raw_data)
 train2, test2 = raw_data.randomSplit([0.8, 0.2])
 
-lr = LogisticRegression(labelCol="AuthorNum",
-	maxIter=10,featuresCol="features",family="multinomial",elasticNetParam=1.0)
+lr = LogisticRegression(labelCol="AuthorNum",maxIter=10,featuresCol="features",family="multinomial",elasticNetParam=1.0)
 
 
 
@@ -151,6 +150,8 @@ import pyspark.sql.functions as F
 from pyspark.sql.types import FloatType
 from pyspark.ml.classification import DecisionTreeClassifier
 from pyspark.mllib.evaluation import MulticlassMetrics
+
+
 dt = DecisionTreeClassifier(labelCol="AuthorNum", featuresCol="features",maxDepth=20)
 dt_model = dt.fit(train)
 dt_prediction = dt_model.transform(test)
@@ -163,7 +164,7 @@ print("Accuracy Score of DecisionTreeClassifier is = %g"% (dt_accuracy))
 
 
 #predictionAndLabels = dt_prediction.select(['prediction', 'AuthorNum'])
-preds_and_labels = dt_prediction.select(['prediction','AuthorNum']).withColumn('AuthorNum', F.col('AuthorNum').cast(FloatType())).orderBy('prediction')
+preds_and_labels = dt_prediction.select(['prediction','AuthorNum']).withColumn('label', F.col('AuthorNum').cast(FloatType())).orderBy('prediction')
 preds_and_labels = preds_and_labels.select(['prediction','AuthorNum'])
 tp = preds_and_labels.rdd.map(tuple)
 metrics = MulticlassMetrics(tp)
