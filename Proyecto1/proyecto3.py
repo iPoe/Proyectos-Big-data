@@ -58,6 +58,7 @@ data = data.filter(data.F2<350)
 #print("Datos Atipicos F2 Eliminados:",data.count())
 
 #Se elimina el atributo F10
+raw_data = data
 data = data.drop('F6')
 #data = data.drop('F10')
 #print("Atributo F10 Eliminado:",data.columns)
@@ -68,7 +69,7 @@ data = indexer.fit(data).transform(data)
 data = data.drop('Author')
 
 #Prueba con df sin balancear
-raw_data = data
+#raw_data = data
 #data.groupby("AuthorNum").count().show()
 
 #Se balancea cada categoria
