@@ -14,7 +14,10 @@ from pyspark.sql.functions import isnan, when, count, col, lit, sum
 from pyspark.sql.functions import (to_date, datediff, date_format,month)
 #Este es un comentario
 #Se carga el conjunto de datos
+
 spark = SparkSession.builder.master("local").appName("Avila").config("spark.some.config.option","some-value").getOrCreate()
+
+sc = SparkContext(conf=conf)
 data = spark.read.format("csv").option("header","true").option("inferSchema", "true").load(r"avila.csv")
 
 #####################################################################################################
