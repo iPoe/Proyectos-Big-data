@@ -64,7 +64,7 @@ data = data.filter(data.F2<350)
 
 #Se elimina el atributo F10
 #data = data.drop('F6')
-#data = data.drop('F10')
+data = data.drop('F10')
 #print("Atributo F10 Eliminado:",data.columns)
 
 #print("Conversion de atributos categoricos a numericos")
@@ -77,21 +77,9 @@ data.groupby("AuthorNum").count().show()
 raw_data = data
 
 #Se balancea cada categoria
-A = data.filter(data.AuthorNum == 0.0).sample(fraction=0.35)
 #A.groupby("AuthorNum").count().show()
 A = data.filter(data.AuthorNum == 0.0).sample(fraction=0.35)
-#A.groupby("AuthorNum").count().show()
-# F = data.filter(col("AuthorNum") == 1.0).withColumn("dummy", explode(array([lit(x) for x in range(1)]))).drop('dummy')
-# E = data.filter(col("AuthorNum") == 2.0).withColumn("dummy", explode(array([lit(x) for x in range(2)]))).drop('dummy')
-# I = data.filter(col("AuthorNum") == 3.0).withColumn("dummy", explode(array([lit(x) for x in range(3)]))).drop('dummy')
-# X = data.filter(col("AuthorNum") == 4.0).withColumn("dummy", explode(array([lit(x) for x in range(3)]))).drop('dummy')
-# H = data.filter(col("AuthorNum") == 5.0).withColumn("dummy", explode(array([lit(x) for x in range(3)]))).drop('dummy')
-# G = data.filter(col("AuthorNum") == 6.0).withColumn("dummy", explode(array([lit(x) for x in range(2)]))).drop('dummy')
-# D = data.filter(col("AuthorNum") == 7.0).withColumn("dummy", explode(array([lit(x) for x in range(3)]))).drop('dummy')
-# Y = data.filter(col("AuthorNum") == 8.0).withColumn("dummy", explode(array([lit(x) for x in range(4)]))).drop('dummy')
-# C = data.filter(col("AuthorNum") == 9.0).withColumn("dummy", explode(array([lit(x) for x in range(5)]))).drop('dummy')
-# W = data.filter(col("AuthorNum") == 10.0).withColumn("dummy", explode(array([lit(x) for x in range(5)]))).drop('dummy')
-#B = data.filter(col("AuthorNum") == 11.0).withColumn("dummy", explode(array([lit(x) for x in range(100)]))).drop('dummy')
+
 F = data.filter(col("AuthorNum") == 1.0).withColumn("dummy", explode(array([lit(x) for x in range(1)]))).drop('dummy')
 E = data.filter(col("AuthorNum") == 2.0).withColumn("dummy", explode(array([lit(x) for x in range(2)]))).drop('dummy')
 I = data.filter(col("AuthorNum") == 3.0).withColumn("dummy", explode(array([lit(x) for x in range(3)]))).drop('dummy')
@@ -100,13 +88,24 @@ H = data.filter(col("AuthorNum") == 5.0).withColumn("dummy", explode(array([lit(
 G = data.filter(col("AuthorNum") == 6.0).withColumn("dummy", explode(array([lit(x) for x in range(2)]))).drop('dummy')
 D = data.filter(col("AuthorNum") == 7.0).withColumn("dummy", explode(array([lit(x) for x in range(3)]))).drop('dummy')
 Y = data.filter(col("AuthorNum") == 8.0).withColumn("dummy", explode(array([lit(x) for x in range(4)]))).drop('dummy')
-C = data.filter(col("AuthorNum") == 9.0).withColumn("dummy", explode(array([lit(x) for x in range(7)]))).drop('dummy')
-W = data.filter(col("AuthorNum") == 10.0).withColumn("dummy", explode(array([lit(x) for x in range(14)]))).drop('dummy')
-B = data.filter(col("AuthorNum") == 11.0).withColumn("dummy", explode(array([lit(x) for x in range(100)]))).drop('dummy')
+C = data.filter(col("AuthorNum") == 9.0).withColumn("dummy", explode(array([lit(x) for x in range(5)]))).drop('dummy')
+W = data.filter(col("AuthorNum") == 10.0).withColumn("dummy", explode(array([lit(x) for x in range(5)]))).drop('dummy')
+#B = data.filter(col("AuthorNum") == 11.0).withColumn("dummy", explode(array([lit(x) for x in range(100)]))).drop('dummy')
+# F = data.filter(col("AuthorNum") == 1.0).withColumn("dummy", explode(array([lit(x) for x in range(1)]))).drop('dummy')
+# E = data.filter(col("AuthorNum") == 2.0).withColumn("dummy", explode(array([lit(x) for x in range(2)]))).drop('dummy')
+# I = data.filter(col("AuthorNum") == 3.0).withColumn("dummy", explode(array([lit(x) for x in range(3)]))).drop('dummy')
+# X = data.filter(col("AuthorNum") == 4.0).withColumn("dummy", explode(array([lit(x) for x in range(3)]))).drop('dummy')
+# H = data.filter(col("AuthorNum") == 5.0).withColumn("dummy", explode(array([lit(x) for x in range(3)]))).drop('dummy')
+# G = data.filter(col("AuthorNum") == 6.0).withColumn("dummy", explode(array([lit(x) for x in range(2)]))).drop('dummy')
+# D = data.filter(col("AuthorNum") == 7.0).withColumn("dummy", explode(array([lit(x) for x in range(3)]))).drop('dummy')
+# Y = data.filter(col("AuthorNum") == 8.0).withColumn("dummy", explode(array([lit(x) for x in range(4)]))).drop('dummy')
+# C = data.filter(col("AuthorNum") == 9.0).withColumn("dummy", explode(array([lit(x) for x in range(7)]))).drop('dummy')
+# W = data.filter(col("AuthorNum") == 10.0).withColumn("dummy", explode(array([lit(x) for x in range(14)]))).drop('dummy')
+# B = data.filter(col("AuthorNum") == 11.0).withColumn("dummy", explode(array([lit(x) for x in range(100)]))).drop('dummy')
 
 #Se juntan todas las categorias balanceadas
-data = A.union(B).union(C).union(D).union(E).union(F).union(G).union(H).union(I).union(W).union(Y).union(X)
-#data = A.union(C).union(D).union(E).union(F).union(G).union(H).union(I).union(W).union(Y).union(X)
+#data = A.union(B).union(C).union(D).union(E).union(F).union(G).union(H).union(I).union(W).union(Y).union(X)
+data = A.union(C).union(D).union(E).union(F).union(G).union(H).union(I).union(W).union(Y).union(X)
 print("Conjunto Balanceado")
 data.groupby("AuthorNum").count().show()
 print("Numero de Registros Dataset Limpio:",data.count(),", Atributos:",len(data.columns))
@@ -136,9 +135,11 @@ lrModel = lr.fit(train)
 
 predict_test=lrModel.transform(test)
 
-evaluator = MulticlassClassificationEvaluator(labelCol="AuthorNum", predictionCol="prediction", metricName="accuracy")
+evaluator = MulticlassClassificationEvaluator(labelCol="AuthorNum",
+	predictionCol="prediction", metricName="accuracy")
+
 lr_accuracy = evaluator.evaluate(predict_test)
-print("F1 score of LogisticRegression is = %g"% (lr_accuracy))
+print("Accuracy score of LogisticRegression is = %g"% (lr_accuracy))
 
 
 
@@ -152,7 +153,7 @@ evaluator = MulticlassClassificationEvaluator(labelCol="AuthorNum",
                                               predictionCol="prediction", metricName="accuracy")
 
 dt_accuracy = evaluator.evaluate(dt_prediction)
-print("F1 Score of DecisionTreeClassifier is = %g"% (dt_accuracy))
+print("Accuracy Score of DecisionTreeClassifier is = %g"% (dt_accuracy))
 
 
 

@@ -75,4 +75,9 @@ F1 score of LogisticRegression is = 0.482587
 F1 Score of DecisionTreeClassifier is = 0.522165
 F1 Score of RandomForestClassifier is = 0.522165
 
+#14 balanceo sin quitar cols 
+Accuracy score of LogisticRegression is = 0.543566
+Accuracy Score of DecisionTreeClassifier is = 0.581085
+Accuracy Score of RandomForestClassifier is = 0.644031
+
 
