@@ -197,8 +197,8 @@ print("Accuracy of DecisionTreeClassifier is = %g"% (dt_accuracy))
 
 from pyspark.ml.classification import RandomForestClassifier
 rf = DecisionTreeClassifier(labelCol="AuthorNum", featuresCol="features")
-rf_model = rf.fit(train2)
-rf_prediction = rf_model.transform(test2)
+rf_model = rf.fit(train)
+rf_prediction = rf_model.transform(test)
 
 rf_accuracy = evaluator.evaluate(rf_prediction)
 print("Accuracy of RandomForestClassifier is = %g"% (rf_accuracy))
