@@ -103,7 +103,7 @@ data=assembler.transform(data)
 train2, test2 = data2.randomSplit([0.8, 0.2])
 train, test = data.randomSplit([0.8, 0.2])
 
-lr = LogisticRegression(labelCol='AuthorNum',maxIter=10)
+lr = LogisticRegression(labelCol='AuthorNum',maxIter=10,features="F1,F2, F3, F4, F5, F6, F7, F8, F9")
 
 # Fit the model
 lrModel = lr.fit(train2)
