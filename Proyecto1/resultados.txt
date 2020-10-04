@@ -59,3 +59,9 @@ F1 Score of RandomForestClassifier is = 0.547392
 F1 score of LogisticRegression is = 0.484055
 F1 Score of DecisionTreeClassifier is = 0.569882
 F1 Score of RandomForestClassifier is = 0.569882
+
+#11 drop f6 y f10 y aumentar 10
+F1 score of LogisticRegression is = 0.488826
+F1 Score of DecisionTreeClassifier is = 0.559968
+F1 Score of RandomForestClassifier is = 0.559968
+
