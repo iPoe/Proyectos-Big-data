@@ -122,7 +122,7 @@ numB = train2.select("AuthorNum").where('AuthorNum == 11').count()
 aux_list = [numA,numF,numE,numI,numX,numH,numG,numD,numY,numC,numW,numB]
 i , thresh_list = 0,[]
 while i!=11:
-	thresh_list.append((float(aux_list[i])/float(dataset_size))*100)
+	thresh_list.append((float(aux_list[i])/float(raw_data_size))*100)
 	i+=1
 print(thresh_list)
 lr = LogisticRegression(labelCol='AuthorNum',maxIter=10,features="features")
