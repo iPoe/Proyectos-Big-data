@@ -161,7 +161,7 @@ predictionAndLabels = dt_prediction.select(['prediction', 'AuthorNum'])
 
 tp = predictionAndLabels.rdd.map(tuple)
 metrics = MulticlassMetrics(tp)
-print(metrics.confusionMatrix.toArray())
+print(metrics.confusionMatrix().toArray())
 
 
 
