@@ -147,7 +147,7 @@ raw_data=assembler.transform(raw_data)
 train2, test2 = raw_data.randomSplit([0.8, 0.2])
 
 
-from pyspark.mllib.evaluation import MulticlassMetrics
+
 
 lr = LogisticRegression(labelCol="AuthorNum",maxIter=1000,featuresCol="features",family="multinomial",elasticNetParam=0.8)
 
