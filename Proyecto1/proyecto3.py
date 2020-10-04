@@ -179,28 +179,11 @@ evaluator = MulticlassClassificationEvaluator(labelCol="AuthorNum", predictionCo
 
 #Modelo 4
 
-# from pyspark.mllib.tree import GradientBoostedTrees, GradientBoostedTreesModel
-# gbt = GBTClassifier(maxIter=10)
+from pyspark.mllib.tree import GradientBoostedTrees, GradientBoostedTreesModel
+model = GradientBoostedTrees.trainClassifier(trainingData,
+	categoricalFeaturesInfo={}, numIterations=3)
 
-# #ovr = OneVsRest(classifier=gbt,featuresCol="features",labelCol="AuthorNum",predictionCol="prediction")
-
-# ovrModel = ovr.fit(train)
-
-# evaluator = MulticlassClassificationEvaluator(metricName="accuracy")
-
-# predictions = ovrModel.transform(test)
-
-# print("Accuracy: {}".format(evaluator.evaluate(predictions)))
-
-# # gbt_model = gbt.fit(train)
-# # gbt_prediction = gbt_model.transform(test)
-# print(evaluator.evaluate(gbt_prediction))
-
-# #gbt_prediction.select("prediction", "Survived", "features").show()
-
-# gbt_accuracy = evaluator.evaluate(gbt_prediction)
-# print("Accuracy of Gradient-boosted tree classifie is = %g"% (gbt_accuracy))
-# print("Test Error of Gradient-boosted tree classifie %g"% (1.0 - gbt_accuracy))
+model = GradientBoostedTrees.trainRegressor(sc.parallelize(train), {}, numIterations=10)
 
 
 
@@ -215,12 +198,12 @@ evaluator = MulticlassClassificationEvaluator(labelCol="AuthorNum", predictionCo
 
 
 #Modelo 4 LSVC
-svm = LinearSVC(maxIter=50,regParam=0.1)
-ovr = OneVsRest(classifier=svm,featuresCol="features",labelCol="AuthorNum")
-ovrModel = ovr.fit(train)
+# svm = LinearSVC(maxIter=50,regParam=0.1)
+# ovr = OneVsRest(classifier=svm,featuresCol="features",labelCol="AuthorNum")
+# ovrModel = ovr.fit(train)
 
-evaluator = MulticlassClassificationEvaluator(metricName="f1",labelCol="AuthorNum",predictionCol="prediction")
+# evaluator = MulticlassClassificationEvaluator(metricName="f1",labelCol="AuthorNum",predictionCol="prediction")
 
-predictions = ovrModel.transform(test)
+# predictions = ovrModel.transform(test)
 
-print("Accuracy: {}".format(evaluator.evaluate(predictions)))
+# print("Accuracy: {}".format(evaluator.evaluate(predictions)))
