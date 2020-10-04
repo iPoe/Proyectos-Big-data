@@ -116,7 +116,6 @@ lrModel = lr.fit(train2)
 # Print the coefficients and intercept for multinomial logistic regression
 #print("Coefficients:" + str(lrModel.coefficientMatrix))
 
-predict_train=lrModel.transform(train)
 predict_test=lrModel.transform(test2)
 
 evaluator = MulticlassClassificationEvaluator(labelCol="AuthorNum", predictionCol="prediction", metricName="accuracy")
