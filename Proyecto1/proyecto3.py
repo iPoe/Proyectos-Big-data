@@ -90,7 +90,7 @@ D = data.filter(col("AuthorNum") == 7.0).withColumn("dummy", explode(array([lit(
 Y = data.filter(col("AuthorNum") == 8.0).withColumn("dummy", explode(array([lit(x) for x in range(4)]))).drop('dummy')
 C = data.filter(col("AuthorNum") == 9.0).withColumn("dummy", explode(array([lit(x) for x in range(5)]))).drop('dummy')
 W = data.filter(col("AuthorNum") == 10.0).withColumn("dummy", explode(array([lit(x) for x in range(5)]))).drop('dummy')
-#B = data.filter(col("AuthorNum") == 11.0).withColumn("dummy", explode(array([lit(x) for x in range(100)]))).drop('dummy')
+B = data.filter(col("AuthorNum") == 11.0).withColumn("dummy", explode(array([lit(x) for x in range(100)]))).drop('dummy')
 # F = data.filter(col("AuthorNum") == 1.0).withColumn("dummy", explode(array([lit(x) for x in range(1)]))).drop('dummy')
 # E = data.filter(col("AuthorNum") == 2.0).withColumn("dummy", explode(array([lit(x) for x in range(2)]))).drop('dummy')
 # I = data.filter(col("AuthorNum") == 3.0).withColumn("dummy", explode(array([lit(x) for x in range(3)]))).drop('dummy')
@@ -104,8 +104,8 @@ W = data.filter(col("AuthorNum") == 10.0).withColumn("dummy", explode(array([lit
 # B = data.filter(col("AuthorNum") == 11.0).withColumn("dummy", explode(array([lit(x) for x in range(100)]))).drop('dummy')
 
 #Se juntan todas las categorias balanceadas
-#data = A.union(B).union(C).union(D).union(E).union(F).union(G).union(H).union(I).union(W).union(Y).union(X)
-data = A.union(C).union(D).union(E).union(F).union(G).union(H).union(I).union(W).union(Y).union(X)
+data = A.union(B).union(C).union(D).union(E).union(F).union(G).union(H).union(I).union(W).union(Y).union(X)
+#data = A.union(C).union(D).union(E).union(F).union(G).union(H).union(I).union(W).union(Y).union(X)
 print("Conjunto Balanceado")
 data.groupby("AuthorNum").count().show()
 print("Numero de Registros Dataset Limpio:",data.count(),", Atributos:",len(data.columns))
@@ -145,6 +145,7 @@ print("Accuracy score of LogisticRegression is = %g"% (lr_accuracy))
 
 #Modelo 2
 from pyspark.ml.classification import DecisionTreeClassifier
+from pyspark.mllib.evaluation import MulticlassMetrics
 dt = DecisionTreeClassifier(labelCol="AuthorNum", featuresCol="features",maxDepth=20)
 dt_model = dt.fit(train)
 dt_prediction = dt_model.transform(test)
@@ -155,6 +156,10 @@ evaluator = MulticlassClassificationEvaluator(labelCol="AuthorNum",
 dt_accuracy = evaluator.evaluate(dt_prediction)
 print("Accuracy Score of DecisionTreeClassifier is = %g"% (dt_accuracy))
 
+
+predictionAndLabels = dt_prediction.select(['prediction', 'AuthorNum'])
+metrics = MulticlassMetrics(predictionAndLabels)
+print(confusion_mat.toArray())
 
 
 
