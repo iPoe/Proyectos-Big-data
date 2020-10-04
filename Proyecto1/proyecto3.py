@@ -60,8 +60,8 @@ data = data.filter(data.F2<350)
 #print("Datos Demasiado Atipicos de F2 Eliminados:",data.count())
 
 #Se elimina el atributo F10
-#data = data.drop('F6')
-#data = data.drop('F10')
+data = data.drop('F6')
+data = data.drop('F10')
 #print("Atributo F10 Eliminado:",data.columns)
 
 #print("Conversion de atributos categoricos a numericos")
@@ -85,7 +85,7 @@ G = data.filter(col("AuthorNum") == 6.0).withColumn("dummy", explode(array([lit(
 D = data.filter(col("AuthorNum") == 7.0).withColumn("dummy", explode(array([lit(x) for x in range(3)]))).drop('dummy')
 Y = data.filter(col("AuthorNum") == 8.0).withColumn("dummy", explode(array([lit(x) for x in range(4)]))).drop('dummy')
 C = data.filter(col("AuthorNum") == 9.0).withColumn("dummy", explode(array([lit(x) for x in range(7)]))).drop('dummy')
-W = data.filter(col("AuthorNum") == 10.0).withColumn("dummy", explode(array([lit(x) for x in range(7)]))).drop('dummy')
+W = data.filter(col("AuthorNum") == 10.0).withColumn("dummy", explode(array([lit(x) for x in range(8)]))).drop('dummy')
 B = data.filter(col("AuthorNum") == 11.0).withColumn("dummy", explode(array([lit(x) for x in range(100)]))).drop('dummy')
 
 #Se juntan todas las categorias balanceadas
