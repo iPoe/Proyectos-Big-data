@@ -1,3 +1,4 @@
+import pyspark.sql.functions as F
 from pyspark import SparkContext, SparkConf
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import isnan, when, count, col, explode, array, lit
@@ -6,6 +7,8 @@ from pyspark.ml.feature import Imputer
 from pyspark.ml.feature import VectorAssembler
 from pyspark.ml.feature import StandardScaler
 from pyspark.ml.feature import ChiSqSelector
+from pyspark.mllib.evaluation import MulticlassMetrics
+from pyspark.sql.types import FloatType
 from pyspark.ml.classification import LinearSVC
 from pyspark.ml.classification import LogisticRegression,OneVsRest
 from pyspark.ml.evaluation import BinaryClassificationEvaluator
@@ -142,14 +145,18 @@ evaluator = MulticlassClassificationEvaluator(labelCol="AuthorNum",
 
 lr_accuracy = evaluator.evaluate(predict_test)
 print("Accuracy score of LogisticRegression is = %g"% (lr_accuracy))
-
+#Matriz de confusion
+preds_and_labels = predict_test.select(['prediction','AuthorNum']).withColumn('label', F.col('AuthorNum').cast(FloatType())).orderBy('prediction')
+preds_and_labels = preds_and_labels.select(['prediction','AuthorNum'])
+tp = preds_and_labels.rdd.map(tuple)
+metrics = MulticlassMetrics(tp)
+print(metrics.confusionMatrix().toArray())
 
 
 #Modelo 2
-import pyspark.sql.functions as F
-from pyspark.sql.types import FloatType
+
 from pyspark.ml.classification import DecisionTreeClassifier
-from pyspark.mllib.evaluation import MulticlassMetrics
+
 
 
 dt = DecisionTreeClassifier(labelCol="AuthorNum", featuresCol="features",maxDepth=20)
@@ -162,8 +169,6 @@ evaluator = MulticlassClassificationEvaluator(labelCol="AuthorNum",
 dt_accuracy = evaluator.evaluate(dt_prediction)
 print("Accuracy Score of DecisionTreeClassifier is = %g"% (dt_accuracy))
 
-
-#predictionAndLabels = dt_prediction.select(['prediction', 'AuthorNum'])
 preds_and_labels = dt_prediction.select(['prediction','AuthorNum']).withColumn('label', F.col('AuthorNum').cast(FloatType())).orderBy('prediction')
 preds_and_labels = preds_and_labels.select(['prediction','AuthorNum'])
 tp = preds_and_labels.rdd.map(tuple)
