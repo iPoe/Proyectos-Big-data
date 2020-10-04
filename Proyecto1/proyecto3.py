@@ -107,7 +107,7 @@ assembler = VectorAssembler(inputCols=cols,outputCol="features")
 # Now let us use the transform method to transform our dataset
 data=assembler.transform(data)
 #data.select("features").show(truncate=False)
-train, test = data.randomSplit([0.8, 0.2])
+train, test = data.randomSplit([0.8, 0.2],seed=20)
 
 raw_data=assembler.transform(raw_data)
 train2, test2 = raw_data.randomSplit([0.8, 0.2])
