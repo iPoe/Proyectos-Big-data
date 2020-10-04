@@ -111,12 +111,12 @@ train2, test2 = raw_data.randomSplit([0.8, 0.2])
 lr = LogisticRegression(labelCol="AuthorNum",maxIter=10,featuresCol="features")
 
 # Fit the model
-lrModel = lr.fit(train)
+lrModel = lr.fit(train2)
 
 # Print the coefficients and intercept for multinomial logistic regression
 #print("Coefficients:" + str(lrModel.coefficientMatrix))
 
-predict_test=lrModel.transform(test)
+predict_test=lrModel.transform(test2)
 
 evaluator = MulticlassClassificationEvaluator(labelCol="AuthorNum", predictionCol="prediction", metricName="f1")
 lr_accuracy = evaluator.evaluate(predict_test)
@@ -166,8 +166,8 @@ print("Recall by label of lr: {}".format(trainingSummary.recallByLabel))
 #Modelo 2
 from pyspark.ml.classification import DecisionTreeClassifier
 dt = DecisionTreeClassifier(labelCol="AuthorNum", featuresCol="features")
-dt_model = dt.fit(train)
-dt_prediction = dt_model.transform(test)
+dt_model = dt.fit(train2)
+dt_prediction = dt_model.transform(test2)
 
 dt_accuracy = evaluator.evaluate(dt_prediction)
 print("Accuracy of DecisionTreeClassifier is = %g"% (dt_accuracy))
@@ -197,8 +197,8 @@ print("Accuracy of DecisionTreeClassifier is = %g"% (dt_accuracy))
 
 from pyspark.ml.classification import RandomForestClassifier
 rf = DecisionTreeClassifier(labelCol="AuthorNum", featuresCol="features")
-rf_model = rf.fit(train)
-rf_prediction = rf_model.transform(test)
+rf_model = rf.fit(train2)
+rf_prediction = rf_model.transform(test2)
 
 rf_accuracy = evaluator.evaluate(rf_prediction)
 print("Accuracy of RandomForestClassifier is = %g"% (rf_accuracy))
