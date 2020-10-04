@@ -170,7 +170,7 @@ evaluator = MulticlassClassificationEvaluator(labelCol="AuthorNum",predictionCol
 dt_accuracy = evaluator.evaluate(dt_prediction)
 #print("Accuracy Score of DecisionTreeClassifier is = {}" .format(dt_accuracy))
 
-preds_and_labels = dt_prediction.select(['prediction','AuthorNum']).withColumn('label', F.col('AuthorNum').cast(FloatType())).orderBy('prediction')
+preds_and_labels = dt_prediction.select(['prediction','AuthorNum']).withColumn('label', F.col('AuthorNum')).orderBy('prediction')
 preds_and_labels = preds_and_labels.select(['prediction','AuthorNum'])
 tp = preds_and_labels.rdd.map(tuple)
 metrics = MulticlassMetrics(tp)
