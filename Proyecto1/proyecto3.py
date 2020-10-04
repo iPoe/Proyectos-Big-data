@@ -150,7 +150,7 @@ print(metrics.confusionMatrix().toArray())
 evaluator = MulticlassClassificationEvaluator(labelCol="AuthorNum",	predictionCol="prediction", metricName="accuracy")
 
 lr_accuracy = evaluator.evaluate(predict_test)
-print("Accuracy score of LogisticRegression is = %g"% (lr_accuracy))
+print("Accuracy score of LogisticRegression is = {}".format(lr_accuracy))
 #Matriz de confusion
 
 
@@ -168,7 +168,7 @@ dt_prediction = dt_model.transform(test)
 evaluator = MulticlassClassificationEvaluator(labelCol="AuthorNum",predictionCol="prediction", metricName="accuracy")
 
 dt_accuracy = evaluator.evaluate(dt_prediction)
-print("Accuracy Score of DecisionTreeClassifier is = %g"% (dt_accuracy))
+print("Accuracy Score of DecisionTreeClassifier is = {}" .format(dt_accuracy))
 
 preds_and_labels = dt_prediction.select(['prediction','AuthorNum']).withColumn('label', F.col('AuthorNum').cast(FloatType())).orderBy('prediction')
 preds_and_labels = preds_and_labels.select(['prediction','AuthorNum'])
@@ -195,7 +195,7 @@ evaluator = MulticlassClassificationEvaluator(labelCol="AuthorNum",
                                               predictionCol="prediction", metricName="accuracy")
 
 rf_accuracy = evaluator.evaluate(rf_prediction)
-print("Accuracy Score of RandomForestClassifier is = %g"% (rf_accuracy))
+print("Accuracy Score of RandomForestClassifier is = {}".format(rf_accuracy))
 preds_and_labels = rf_prediction.select(['prediction','AuthorNum']).withColumn('label', F.col('AuthorNum').cast(FloatType())).orderBy('prediction')
 preds_and_labels = preds_and_labels.select(['prediction','AuthorNum'])
 tp = preds_and_labels.rdd.map(tuple)
