@@ -143,22 +143,6 @@ lr = LogisticRegression(labelCol="AuthorNum",maxIter=10,featuresCol="features")
 # print("F1 score of LogisticRegression is = %g"% (lr_accuracy))
 
 
-# instantiate the One Vs Rest Classifier.
-# ovr = OneVsRest(classifier=lr,labelCol='AuthorNum')
-
-# # train the multiclass model.
-# ovrModel = ovr.fit(train)
-
-# # score the model on test data.
-# predictions_ovr = ovrModel.transform(test)
-
-# # obtain evaluator.
-# evaluator_ovr = MulticlassClassificationEvaluator(metricName="accuracy")
-
-# # compute the classification error on test data.
-# accuracy_ovr = evaluator.evaluate(predictions_ovr)
-# print("accuracy of LogisticRegression with ovr is = %g"% (accuracy_ovr))
-
 
 #Modelo 2
 # from pyspark.ml.classification import DecisionTreeClassifier
