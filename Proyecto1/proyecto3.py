@@ -17,8 +17,6 @@ from pyspark.sql.functions import (to_date, datediff, date_format,month)
 #Se carga el conjunto de datos
 
 spark = SparkSession.builder.master("local").appName("Avila").config("spark.some.config.option","some-value").getOrCreate()
-conf = SparkConf().setAppName("Avila").setMaster("local")
-sc = SparkContext(conf=conf)
 data = spark.read.format("csv").option("header","true").option("inferSchema", "true").load(r"avila.csv")
 
 #####################################################################################################
@@ -140,7 +138,7 @@ lr = LogisticRegression(labelCol="AuthorNum",maxIter=10,featuresCol="features")
 # # #print("Coefficients:" + str(lrModel.coefficientMatrix))
 # predict_test=lrModel.transform(test)
 
-evaluator = MulticlassClassificationEvaluator(labelCol="AuthorNum", predictionCol="prediction", metricName="f1")
+#evaluator = MulticlassClassificationEvaluator(labelCol="AuthorNum", predictionCol="prediction", metricName="f1")
 # lr_accuracy = evaluator.evaluate(predict_test)
 # print("F1 score of LogisticRegression is = %g"% (lr_accuracy))
 
@@ -181,27 +179,22 @@ evaluator = MulticlassClassificationEvaluator(labelCol="AuthorNum", predictionCo
 # nb_accuracy = evaluator.evaluate(nb_prediction)
 # print("Accuracy of Naive bayes is = %g"%(nb_accuracy))
 
-#Modelo 4
+#Random forest
 
-from pyspark.mllib.tree import GradientBoostedTrees, GradientBoostedTreesModel
-# model = GradientBoostedTrees.trainClassifier(trainingData,
-# 	categoricalFeaturesInfo={}, numIterations=3)
+from pyspark.ml.classification import RandomForestClassifier
+rf = DecisionTreeClassifier(labelCol="AuthorNum", featuresCol="features",numTrees=10)
+rf_model = rf.fit(train)
+rf_prediction = rf_model.transform(test)
 
-model = GradientBoostedTrees.trainRegressor(sc.parallelize(train), {}, numIterations=10)
+evaluator = MulticlassClassificationEvaluator(labelCol="AuthorNum",
+                                              predictionCol="prediction", metricName="accuracy")
 
-
-
-# from pyspark.ml.classification import RandomForestClassifier
-# rf = DecisionTreeClassifier(labelCol="AuthorNum", featuresCol="features")
-# rf_model = rf.fit(train)
-# rf_prediction = rf_model.transform(test)
-
-# rf_accuracy = evaluator.evaluate(rf_prediction)
-# print("F1 Score of RandomForestClassifier is = %g"% (rf_accuracy))
+rf_accuracy = evaluator.evaluate(rf_prediction)
+print("F1 Score of RandomForestClassifier is = %g"% (rf_accuracy))
 #print("Test Error of RandomForestClassifier  = %g " % (1.0 - rf_accuracy))
 
 
-#Modelo 4 LSVC
+#Modelo LSVC
 # svm = LinearSVC(maxIter=50,regParam=0.1)
 # ovr = OneVsRest(classifier=svm,featuresCol="features",labelCol="AuthorNum")
 # ovrModel = ovr.fit(train)
