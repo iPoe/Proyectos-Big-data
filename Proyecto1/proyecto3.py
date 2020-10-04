@@ -128,7 +128,7 @@ train, test = data.randomSplit([0.8, 0.2],seed=20)
 raw_data=assembler.transform(raw_data)
 train2, test2 = raw_data.randomSplit([0.8, 0.2])
 
-lr = LogisticRegression(labelCol="AuthorNum",maxIter=10,featuresCol="features")
+lr = LogisticRegression(labelCol="AuthorNum",maxIter=10,featuresCol="features",family="multinomial")
 
 # Fit the model
 lrModel = lr.fit(train)
@@ -160,7 +160,7 @@ print("Accuracy Score of DecisionTreeClassifier is = %g"% (dt_accuracy))
 
 
 #predictionAndLabels = dt_prediction.select(['prediction', 'AuthorNum'])
-preds_and_labels = predictions.select(['predictions','d']).withColumn('AuthorNum', F.col('d').cast(FloatType())).orderBy('prediction')
+preds_and_labels = predictions.select(['prediction','d']).withColumn('AuthorNum', F.col('d').cast(FloatType())).orderBy('prediction')
 tp = predictionAndLabels.rdd.map(tuple)
 metrics = MulticlassMetrics(tp)
 print(metrics.confusionMatrix().toArray())
