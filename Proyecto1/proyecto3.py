@@ -151,8 +151,7 @@ print("Accuracy score of LogisticRegression is = %g"% (lr_accuracy))
 #Modelo 2
 
 from pyspark.ml.classification import DecisionTreeClassifier
-
-
+import pyspark.sql.functions as F
 
 dt = DecisionTreeClassifier(labelCol="AuthorNum", featuresCol="features",maxDepth=20)
 dt_model = dt.fit(train)
@@ -163,7 +162,7 @@ evaluator = MulticlassClassificationEvaluator(labelCol="AuthorNum",predictionCol
 dt_accuracy = evaluator.evaluate(dt_prediction)
 print("Accuracy Score of DecisionTreeClassifier is = %g"% (dt_accuracy))
 
-preds_and_labels = dt_prediction.select(['prediction','AuthorNum']).withColumn('AuthorNum', F.col('AuthorNum').cast(FloatType())).orderBy('prediction')
+preds_and_labels = dt_prediction.select(['prediction','AuthorNum']).withColumn('label', F.col('AuthorNum').cast(FloatType())).orderBy('prediction')
 preds_and_labels = preds_and_labels.select(['prediction','AuthorNum'])
 tp = preds_and_labels.rdd.map(tuple)
 metrics = MulticlassMetrics(tp)
