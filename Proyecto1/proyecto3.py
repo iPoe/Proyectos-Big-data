@@ -172,17 +172,12 @@ lr = LogisticRegression(labelCol="AuthorNum",maxIter=10,featuresCol="features")
 #print("Test Error of DecisionTreeClassifier = %g " % (1.0 - dt_accuracy))
 #Modelo 3
 
-# from pyspark.ml.classification import NaiveBayes
-# nb = NaiveBayes(labelCol="AuthorNum",featuresCol="features")
-# nb_model = nb.fit(train)
-# nb_prediction = nb_model.transform(test)
-# nb_accuracy = evaluator.evaluate(nb_prediction)
-# print("Accuracy of Naive bayes is = %g"%(nb_accuracy))
+
 
 #Random forest
 
 from pyspark.ml.classification import RandomForestClassifier
-rf = DecisionTreeClassifier(labelCol="AuthorNum", featuresCol="features",numTrees=10)
+rf = RandomForestClassifier(labelCol="AuthorNum", featuresCol="features",numTrees=10)
 rf_model = rf.fit(train)
 rf_prediction = rf_model.transform(test)
 
@@ -191,7 +186,6 @@ evaluator = MulticlassClassificationEvaluator(labelCol="AuthorNum",
 
 rf_accuracy = evaluator.evaluate(rf_prediction)
 print("F1 Score of RandomForestClassifier is = %g"% (rf_accuracy))
-#print("Test Error of RandomForestClassifier  = %g " % (1.0 - rf_accuracy))
 
 
 #Modelo LSVC
