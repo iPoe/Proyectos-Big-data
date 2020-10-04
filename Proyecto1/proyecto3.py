@@ -141,11 +141,11 @@ lrModel = lr.fit(train)
 
 predict_test=lrModel.transform(test)
 
-preds_and_labels = predict_test.select(['prediction','AuthorNum']).withColumn('label', F.col('AuthorNum').cast(FloatType())).orderBy('prediction')
-preds_and_labels = preds_and_labels.select(['prediction','AuthorNum'])
-tp = preds_and_labels.rdd.map(tuple)
-metrics = MulticlassMetrics(tp)
-print(metrics.confusionMatrix().toArray())
+# preds_and_labels = predict_test.select(['prediction','AuthorNum']).withColumn('label', F.col('AuthorNum').cast(FloatType())).orderBy('prediction')
+# preds_and_labels = preds_and_labels.select(['prediction','AuthorNum'])
+# tp = preds_and_labels.rdd.map(tuple)
+# metrics = MulticlassMetrics(tp)
+# print(metrics.confusionMatrix().toArray())
 
 evaluator = MulticlassClassificationEvaluator(labelCol="AuthorNum",	predictionCol="prediction", metricName="accuracy")
 
@@ -170,12 +170,11 @@ evaluator = MulticlassClassificationEvaluator(labelCol="AuthorNum",predictionCol
 dt_accuracy = evaluator.evaluate(dt_prediction)
 #print("Accuracy Score of DecisionTreeClassifier is = {}" .format(dt_accuracy))
 
-preds_and_labels = dt_prediction.select(['prediction','AuthorNum']).withColumn('label', F.col('AuthorNum').cast(FloatType())).orderBy('prediction')
+preds_and_labels = dt_prediction.select(['prediction','AuthorNum']).withColumn('label', F.col('AuthorNum').cast(IntType())).orderBy('prediction')
 preds_and_labels = preds_and_labels.select(['prediction','AuthorNum'])
 tp = preds_and_labels.rdd.map(tuple)
 metrics = MulticlassMetrics(tp)
-salida = map(int,metrics.confusionMatrix().toArray())
-print(salida)
+print(metrics.confusionMatrix().toArray())
 
 
 
@@ -197,9 +196,9 @@ evaluator = MulticlassClassificationEvaluator(labelCol="AuthorNum",
 
 rf_accuracy = evaluator.evaluate(rf_prediction)
 #print("Accuracy Score of RandomForestClassifier is = {}".format(rf_accuracy))
-preds_and_labels = rf_prediction.select(['prediction','AuthorNum']).withColumn('label', F.col('AuthorNum').cast(FloatType())).orderBy('prediction')
-preds_and_labels = preds_and_labels.select(['prediction','AuthorNum'])
-tp = preds_and_labels.rdd.map(tuple)
-metrics = MulticlassMetrics(tp)
-salida = map(int,metrics.confusionMatrix().toArray())
-print(salida)
+# preds_and_labels = rf_prediction.select(['prediction','AuthorNum']).withColumn('label', F.col('AuthorNum').cast(FloatType())).orderBy('prediction')
+# preds_and_labels = preds_and_labels.select(['prediction','AuthorNum'])
+# tp = preds_and_labels.rdd.map(tuple)
+# metrics = MulticlassMetrics(tp)
+# salida = map(int,metrics.confusionMatrix().toArray())
+# print(salida)
