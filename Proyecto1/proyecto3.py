@@ -58,7 +58,8 @@ data = data.filter(data.F2<350)
 #print("Datos Atipicos F2 Eliminados:",data.count())
 
 #Se elimina el atributo F10
-data = data.drop('F10')
+data = data.drop('F6')
+#data = data.drop('F10')
 #print("Atributo F10 Eliminado:",data.columns)
 
 #Convertir los atributos categoricos a numericos
