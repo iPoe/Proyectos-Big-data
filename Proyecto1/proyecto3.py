@@ -76,8 +76,8 @@ raw_data = data
 #Se balancea cada categoria
 A = data.filter(data.AuthorNum == 0.0).sample(fraction=0.35)
 #A.groupby("AuthorNum").count().show()
-F = data.filter(col("AuthorNum") == 1.0).withColumn("dummy", explode(array([lit(x) for x in range(2)]))).drop('dummy')
-E = data.filter(col("AuthorNum") == 2.0).withColumn("dummy", explode(array([lit(x) for x in range(3)]))).drop('dummy')
+F = data.filter(col("AuthorNum") == 1.0).withColumn("dummy", explode(array([lit(x) for x in range(1)]))).drop('dummy')
+E = data.filter(col("AuthorNum") == 2.0).withColumn("dummy", explode(array([lit(x) for x in range(1)]))).drop('dummy')
 I = data.filter(col("AuthorNum") == 3.0).withColumn("dummy", explode(array([lit(x) for x in range(3)]))).drop('dummy')
 X = data.filter(col("AuthorNum") == 4.0).withColumn("dummy", explode(array([lit(x) for x in range(3)]))).drop('dummy')
 H = data.filter(col("AuthorNum") == 5.0).withColumn("dummy", explode(array([lit(x) for x in range(3)]))).drop('dummy')
