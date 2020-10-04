@@ -123,8 +123,8 @@ lr_accuracy = evaluator.evaluate(predict_test)
 print("Accuracy score of LogisticRegression is = %g"% (lr_accuracy))
 
 trainingSummary = lrModel.summary
-print("RMSE: %f" % trainingSummary.rootMeanSquaredError)
-print("r2: %f" % trainingSummary.r2)
+print("F: %f" % trainingSummary.fMeasureByLabel)
+print("accuracy: %f" % trainingSummary.accuracy)
 
 # instantiate the One Vs Rest Classifier.
 # ovr = OneVsRest(classifier=lr,labelCol='AuthorNum')
