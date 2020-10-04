@@ -131,30 +131,30 @@ train2, test2 = raw_data.randomSplit([0.8, 0.2])
 
 lr = LogisticRegression(labelCol="AuthorNum",maxIter=10,featuresCol="features")
 
-# # Fit the model
-# lrModel = lr.fit(train)
+# Fit the model
+lrModel = lr.fit(train)
 
-# # # Print the coefficients and intercept for multinomial logistic regression
-# # #print("Coefficients:" + str(lrModel.coefficientMatrix))
-# predict_test=lrModel.transform(test)
+predict_test=lrModel.transform(test)
 
-#evaluator = MulticlassClassificationEvaluator(labelCol="AuthorNum", predictionCol="prediction", metricName="f1")
-# lr_accuracy = evaluator.evaluate(predict_test)
-# print("F1 score of LogisticRegression is = %g"% (lr_accuracy))
+evaluator = MulticlassClassificationEvaluator(labelCol="AuthorNum", predictionCol="prediction", metricName="accuracy")
+lr_accuracy = evaluator.evaluate(predict_test)
+print("F1 score of LogisticRegression is = %g"% (lr_accuracy))
 
 
 
 #Modelo 2
-# from pyspark.ml.classification import DecisionTreeClassifier
-# dt = DecisionTreeClassifier(labelCol="AuthorNum", featuresCol="features")
-# dt_model = dt.fit(train)
-# dt_prediction = dt_model.transform(test)
+from pyspark.ml.classification import DecisionTreeClassifier
+dt = DecisionTreeClassifier(labelCol="AuthorNum", featuresCol="features")
+dt_model = dt.fit(train)
+dt_prediction = dt_model.transform(test)
 
-# dt_accuracy = evaluator.evaluate(dt_prediction)
-# print("F1 Score of DecisionTreeClassifier is = %g"% (dt_accuracy))
+evaluator = MulticlassClassificationEvaluator(labelCol="AuthorNum",
+                                              predictionCol="prediction", metricName="accuracy")
 
-#print("Test Error of DecisionTreeClassifier = %g " % (1.0 - dt_accuracy))
-#Modelo 3
+dt_accuracy = evaluator.evaluate(dt_prediction)
+print("F1 Score of DecisionTreeClassifier is = %g"% (dt_accuracy))
+
+
 
 
 
@@ -169,7 +169,7 @@ evaluator = MulticlassClassificationEvaluator(labelCol="AuthorNum",
                                               predictionCol="prediction", metricName="accuracy")
 
 rf_accuracy = evaluator.evaluate(rf_prediction)
-print("F1 Score of RandomForestClassifier is = %g"% (rf_accuracy))
+print("Accuracy Score of RandomForestClassifier is = %g"% (rf_accuracy))
 
 
 #Modelo LSVC
