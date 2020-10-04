@@ -74,7 +74,7 @@ data.groupby("AuthorNum").count().show()
 raw_data = data
 
 #Se balancea cada categoria
-A = data.filter(data.AuthorNum == 0.0)
+A = data.filter(data.AuthorNum == 0.0).sample(fraction=0.35)
 #A.groupby("AuthorNum").count().show()
 F = data.filter(col("AuthorNum") == 1.0).withColumn("dummy", explode(array([lit(x) for x in range(2)]))).drop('dummy')
 E = data.filter(col("AuthorNum") == 2.0).withColumn("dummy", explode(array([lit(x) for x in range(3)]))).drop('dummy')
