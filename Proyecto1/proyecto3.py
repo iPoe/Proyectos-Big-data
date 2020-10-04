@@ -20,56 +20,58 @@ data = spark.read.format("csv").option("header","true").option("inferSchema", "t
 #PRIMER PUNTO
 #DESCRIPCION DEL CONJUNTO DE DATOS INICIAL
 #Imprime la cantidad de registros y atributos respectivamente
-"""
-print("Registros:",data.count(),", Atributos:",len(data.columns))
+
+print("Registros Iniciales:",data.count(),", Atributos Iniciales:",len(data.columns))
 
 #Tipo de los atributos
 data.printSchema()
 
 # Se revisa si existen nulos en alguno de los atributos del dataset
+print("Cantidad de Nulos en cada atributo")
 print(data.select([count(when(isnan(c),c)).alias(c) for c in data.columns]).toPandas().head())
 
 #Descripcion de los atributos
+print("Descripcion de los atributos")
 print(data.describe().select("Summary","F1","F2","F3","F4","F5").show())
 print(data.describe().select("Summary","F6","F7","F8","F9","F10").show())
 
 #Se verifica la correlacion entre los atributos
 pd = data.toPandas()
-print("CORRELATION")
+print("Correlacion entre atributos")
 print(pd.corr())
 
 #Diagrama de cajas para verificar datos atipicos
 #plt.boxplot((pd['F1'],pd['F2'],pd['F3'],pd['F4'],pd['F5'],pd['F6'],pd['F7'],pd['F8'],pd['F9'],pd['F10']))
 #plt.show()
 
-
 #Distribucion del atributo clasificador
+print("Distribucion del atributo clasificador")
 data.groupby("Author").count().show()
 
-"""
+
 #####################################################################################################
 #COMIENZA EL SEGUNDO PUNTO
 #LIMPIEZA DE LOS DATOS
 
 #Como se puede ver en los diagramas de cajas, el atributo F2 tiene datos que son demasiado atipicos
 #Estos registros se eliminaran
-#print("LIMPIEZA DE LOS DATOS")
+print("LIMPIEZA DE LOS DATOS")
 data = data.filter(data.F2<350)
-#print("Datos Atipicos F2 Eliminados:",data.count())
+print("Datos Demasiado Atipicos de F2 Eliminados:",data.count())
 
 #Se elimina el atributo F10
 #data = data.drop('F6')
 #data = data.drop('F10')
 #print("Atributo F10 Eliminado:",data.columns)
 
-#Convertir los atributos categoricos a numericos
+print("Conversion de atributos categoricos a numericos")
 indexer = StringIndexer(inputCol="Author", outputCol="AuthorNum")
 data = indexer.fit(data).transform(data)
 data = data.drop('Author')
+data.groupby("AuthorNum").count().show()
 
 #Prueba con df sin balancear
 raw_data = data
-#data.groupby("AuthorNum").count().show()
 
 #Se balancea cada categoria
 A = data.filter(data.AuthorNum == 0.0)
@@ -88,13 +90,15 @@ B = data.filter(col("AuthorNum") == 11.0).withColumn("dummy", explode(array([lit
 
 #Se juntan todas las categorias balanceadas
 data = A.union(B).union(C).union(D).union(E).union(F).union(G).union(H).union(I).union(W).union(Y).union(X)
+print("Conjunto Balanceado")
 data.groupby("AuthorNum").count().show()
-#print("Numero de Registros Dataset Limpio:",data.count(),", Atributos:",len(data.columns))
+print("Numero de Registros Dataset Limpio:",data.count(),", Atributos:",len(data.columns))
 
 #####################################################################################################
 #COMIENZA PUNTO 3
 #Entrenamiento de modelos:
 #Modelo 1
+"""
 cols=data.columns
 cols.remove("AuthorNum")
 # Let us import the vector assembler
@@ -123,22 +127,22 @@ lr_accuracy = evaluator.evaluate(predict_test)
 print("F1 score of LogisticRegression is = %g"% (lr_accuracy))
 
 
-from pyspark.ml.tuning import CrossValidator, ParamGridBuilder
-paramGrid = (ParamGridBuilder()
-  .addGrid(lr.regParam, [0.01, 0.1, 0.5]) \
-  .addGrid(lr.maxIter, [10, 20, 50]) \
-  .addGrid(lr.elasticNetParam, [0.0, 0.8]) \
-  .build())
+# from pyspark.ml.tuning import CrossValidator, ParamGridBuilder
+# paramGrid = (ParamGridBuilder()
+#   .addGrid(lr.regParam, [0.01, 0.1, 0.5]) \
+#   .addGrid(lr.maxIter, [10, 20, 50]) \
+#   .addGrid(lr.elasticNetParam, [0.0, 0.8]) \
+#   .build())
 
-crossval = CrossValidator(estimator=lr,
-                          estimatorParamMaps=paramGrid,
-                          evaluator=evaluator,
-                          numFolds=10)
+# crossval = CrossValidator(estimator=lr,
+#                           estimatorParamMaps=paramGrid,
+#                           evaluator=evaluator,
+#                           numFolds=10)
 
-model_lr = crossval.fit(train)
-predictions_lr = model_lr.transform(test)
+# model_lr = crossval.fit(train)
+# predictions_lr = model_lr.transform(test)
 
-print(evaluator.evaluate(predictions_lr))
+# print(evaluator.evaluate(predictions_lr))
 
 #trainingSummary = lrModel.summary
 #print("F: %f" % trainingSummary.fMeasureByLabel)
@@ -204,4 +208,4 @@ rf_prediction = rf_model.transform(test2)
 
 rf_accuracy = evaluator.evaluate(rf_prediction)
 print("F1 Score of RandomForestClassifier is = %g"% (rf_accuracy))
-#print("Test Error of RandomForestClassifier  = %g " % (1.0 - rf_accuracy))
+#print("Test Error of RandomForestClassifier  = %g " % (1.0 - rf_accuracy))"""
