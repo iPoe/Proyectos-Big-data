@@ -174,6 +174,8 @@ print(metrics.confusionMatrix().toArray())
 #Random forest
 
 from pyspark.ml.classification import RandomForestClassifier
+import pyspark.sql.functions as F
+
 rf = RandomForestClassifier(labelCol="AuthorNum", featuresCol="features",numTrees=10,subsamplingRate=1,maxDepth=10)
 rf_model = rf.fit(train)
 rf_prediction = rf_model.transform(test)
@@ -183,15 +185,8 @@ evaluator = MulticlassClassificationEvaluator(labelCol="AuthorNum",
 
 rf_accuracy = evaluator.evaluate(rf_prediction)
 print("Accuracy Score of RandomForestClassifier is = %g"% (rf_accuracy))
-
-
-#Modelo LSVC
-# svm = LinearSVC(maxIter=50,regParam=0.1)
-# ovr = OneVsRest(classifier=svm,featuresCol="features",labelCol="AuthorNum")
-# ovrModel = ovr.fit(train)
-
-# evaluator = MulticlassClassificationEvaluator(metricName="f1",labelCol="AuthorNum",predictionCol="prediction")
-
-# predictions = ovrModel.transform(test)
-
-# print("Accuracy: {}".format(evaluator.evaluate(predictions)))
+preds_and_labels = rf_prediction.select(['prediction','AuthorNum']).withColumn('label', F.col('AuthorNum').cast(FloatType())).orderBy('prediction')
+preds_and_labels = preds_and_labels.select(['prediction','AuthorNum'])
+tp = preds_and_labels.rdd.map(tuple)
+metrics = MulticlassMetrics(tp)
+print(metrics.confusionMatrix().toArray())
