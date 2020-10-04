@@ -131,6 +131,8 @@ train2, test2 = raw_data.randomSplit([0.8, 0.2])
 lr = LogisticRegression(labelCol="AuthorNum",
 	maxIter=10,featuresCol="features",family="multinomial",elasticNetParam=1.0)
 
+
+
 # Fit the model
 lrModel = lr.fit(train)
 
