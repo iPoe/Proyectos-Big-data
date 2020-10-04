@@ -1,4 +1,4 @@
-import pyspark.sql.functions as F
+
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import isnan, when, count, col, explode, array, lit
 from pyspark.ml.feature import StringIndexer
@@ -130,14 +130,22 @@ train, test = data.randomSplit([0.8, 0.2],seed=20)
 raw_data=assembler.transform(raw_data)
 train2, test2 = raw_data.randomSplit([0.8, 0.2])
 
+import pyspark.sql.functions as F
+from pyspark.sql.types import FloatType
+from pyspark.mllib.evaluation import MulticlassMetrics
+
 lr = LogisticRegression(labelCol="AuthorNum",maxIter=1000,featuresCol="features",family="multinomial",elasticNetParam=0.8)
-
-
 
 # Fit the model
 lrModel = lr.fit(train)
 
 predict_test=lrModel.transform(test)
+
+preds_and_labels = predict_test.select(['prediction','AuthorNum']).withColumn('label', F.col('AuthorNum').cast(FloatType())).orderBy('prediction')
+preds_and_labels = preds_and_labels.select(['prediction','AuthorNum'])
+tp = preds_and_labels.rdd.map(tuple)
+metrics = MulticlassMetrics(tp)
+print(metrics.confusionMatrix().toArray())
 
 evaluator = MulticlassClassificationEvaluator(labelCol="AuthorNum",	predictionCol="prediction", metricName="accuracy")
 
@@ -151,6 +159,7 @@ print("Accuracy score of LogisticRegression is = %g"% (lr_accuracy))
 import pyspark.sql.functions as F
 from pyspark.ml.classification import DecisionTreeClassifier
 from pyspark.sql.types import FloatType
+from pyspark.mllib.evaluation import MulticlassMetrics
 
 dt = DecisionTreeClassifier(labelCol="AuthorNum", featuresCol="features",maxDepth=20)
 dt_model = dt.fit(train)
@@ -171,10 +180,11 @@ print(metrics.confusionMatrix().toArray())
 
 
 #Random forest
-
-from pyspark.ml.classification import RandomForestClassifier
 import pyspark.sql.functions as F
+from pyspark.ml.classification import RandomForestClassifier
+
 from pyspark.sql.types import FloatType
+from pyspark.mllib.evaluation import MulticlassMetrics
 
 
 rf = RandomForestClassifier(labelCol="AuthorNum", featuresCol="features",numTrees=10,subsamplingRate=1,maxDepth=10)
