@@ -95,7 +95,7 @@ predict_test=model.transform(test)
 evaluator=BinaryClassificationEvaluator(rawPredictionCol="rawPrediction",labelCol="Outcome")
 predict_test.select("Outcome","rawPrediction","prediction","probability").show(5)
 print("The area under ROC for train set is {}".format(evaluator.evaluate(predict_train)))
-print("Esto es accuracy {}".format(evaluator.evaluate(predict_test)))
+print("Test area under ROC {}".format(evaluator.evaluate(predict_test)))
 
 
 #Modelo numero 2: DecisionTreeClassifier
