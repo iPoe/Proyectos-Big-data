@@ -25,7 +25,6 @@ data = spark.read.format("csv").option("header","true").option("inferSchema", "t
 #PRIMER PUNTO
 #DESCRIPCION DEL CONJUNTO DE DATOS INICIAL
 #Imprime la cantidad de registros y atributos respectivamente
-"""
 print("Registros Iniciales:",data.count(),", Atributos Iniciales:",len(data.columns))
 
 #Tipo de los atributos
@@ -45,15 +44,13 @@ pd = data.toPandas()
 print("Correlacion entre atributos")
 print(pd.corr())
 
-#Diagrama de cajas para verificar datos atipicos
+#Diagrama de cajas para verificar datos atipicos (Jupyter)
 #plt.boxplot((pd['F1'],pd['F2'],pd['F3'],pd['F4'],pd['F5'],pd['F6'],pd['F7'],pd['F8'],pd['F9'],pd['F10']))
 #plt.show()
 
 #Distribucion del atributo clasificador
 print("Distribucion del atributo clasificador")
 data.groupby("Author").count().show()
-
-"""
 #####################################################################################################
 #COMIENZA EL SEGUNDO PUNTO
 #LIMPIEZA DE LOS DATOS
@@ -64,9 +61,7 @@ data.groupby("Author").count().show()
 data = data.filter(data.F2<350)
 #print("Datos Demasiado Atipicos de F2 Eliminados:",data.count())
 
-#Se elimina el atributo F10
-data = data.drop('F6')
-#data = data.drop('F10')
+
 #print("Atributo F10 Eliminado:",data.columns)
 
 #print("Conversion de atributos categoricos a numericos")
@@ -79,33 +74,7 @@ data.groupby("AuthorNum").count().show()
 raw_data = data
 
 #Se balancea cada categoria
-#A.groupby("AuthorNum").count().show()
-# A = data.filter(data.AuthorNum == 0.0).sample(fraction=0.35)
 
-# F = data.filter(col("AuthorNum") == 1.0).withColumn("dummy", explode(array([lit(x) for x in range(1)]))).drop('dummy')
-# E = data.filter(col("AuthorNum") == 2.0).withColumn("dummy", explode(array([lit(x) for x in range(2)]))).drop('dummy')
-# I = data.filter(col("AuthorNum") == 3.0).withColumn("dummy", explode(array([lit(x) for x in range(3)]))).drop('dummy')
-# X = data.filter(col("AuthorNum") == 4.0).withColumn("dummy", explode(array([lit(x) for x in range(3)]))).drop('dummy')
-# H = data.filter(col("AuthorNum") == 5.0).withColumn("dummy", explode(array([lit(x) for x in range(3)]))).drop('dummy')
-# G = data.filter(col("AuthorNum") == 6.0).withColumn("dummy", explode(array([lit(x) for x in range(2)]))).drop('dummy')
-# D = data.filter(col("AuthorNum") == 7.0).withColumn("dummy", explode(array([lit(x) for x in range(3)]))).drop('dummy')
-# Y = data.filter(col("AuthorNum") == 8.0).withColumn("dummy", explode(array([lit(x) for x in range(4)]))).drop('dummy')
-# C = data.filter(col("AuthorNum") == 9.0).withColumn("dummy", explode(array([lit(x) for x in range(5)]))).drop('dummy')
-# W = data.filter(col("AuthorNum") == 10.0).withColumn("dummy", explode(array([lit(x) for x in range(5)]))).drop('dummy')
-# B = data.filter(col("AuthorNum") == 11.0).withColumn("dummy", explode(array([lit(x) for x in range(100)]))).drop('dummy')
-# F = data.filter(col("AuthorNum") == 1.0).withColumn("dummy", explode(array([lit(x) for x in range(1)]))).drop('dummy')
-# E = data.filter(col("AuthorNum") == 2.0).withColumn("dummy", explode(array([lit(x) for x in range(2)]))).drop('dummy')
-# I = data.filter(col("AuthorNum") == 3.0).withColumn("dummy", explode(array([lit(x) for x in range(3)]))).drop('dummy')
-# X = data.filter(col("AuthorNum") == 4.0).withColumn("dummy", explode(array([lit(x) for x in range(3)]))).drop('dummy')
-# H = data.filter(col("AuthorNum") == 5.0).withColumn("dummy", explode(array([lit(x) for x in range(3)]))).drop('dummy')
-# G = data.filter(col("AuthorNum") == 6.0).withColumn("dummy", explode(array([lit(x) for x in range(2)]))).drop('dummy')
-# D = data.filter(col("AuthorNum") == 7.0).withColumn("dummy", explode(array([lit(x) for x in range(3)]))).drop('dummy')
-# Y = data.filter(col("AuthorNum") == 8.0).withColumn("dummy", explode(array([lit(x) for x in range(4)]))).drop('dummy')
-# C = data.filter(col("AuthorNum") == 9.0).withColumn("dummy", explode(array([lit(x) for x in range(7)]))).drop('dummy')
-# W = data.filter(col("AuthorNum") == 10.0).withColumn("dummy", explode(array([lit(x) for x in range(14)]))).drop('dummy')
-# B = data.filter(col("AuthorNum") == 11.0).withColumn("dummy", explode(array([lit(x) for x in range(100)]))).drop('dummy')
-
-#New balance
 A = data.filter(data.AuthorNum == 0.0).sample(fraction=0.24)
 F = data.filter(data.AuthorNum == 0.0).sample(fraction=0.53)
 E = data.filter(col("AuthorNum") == 2.0).withColumn("dummy", explode(array([lit(x) for x in range(1)]))).drop('dummy')
@@ -120,10 +89,8 @@ W = data.filter(col("AuthorNum") == 10.0).withColumn("dummy", explode(array([lit
 B = data.filter(col("AuthorNum") == 11.0).withColumn("dummy", explode(array([lit(x) for x in range(170)]))).drop('dummy')
 
 #Se juntan todas las categorias balanceadas
-#data = A.union(B).union(C).union(D).union(E).union(F).union(G).union(H).union(I).union(W).union(Y).union(X)
 data = A.union(B).union(C).union(D).union(E).union(F).union(G).union(H).union(I).union(W).union(Y).union(X)
 
-#data = A.union(C).union(D).union(E).union(F).union(G).union(H).union(I).union(W).union(Y).union(X)
 print("Conjunto Balanceado")
 data.groupby("AuthorNum").count().show()
 print("Numero de Registros Dataset Limpio:",data.count(),", Atributos:",len(data.columns))
