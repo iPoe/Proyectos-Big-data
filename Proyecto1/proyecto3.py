@@ -215,7 +215,7 @@ evaluator = MulticlassClassificationEvaluator(labelCol="AuthorNum", predictionCo
 
 
 #Modelo 4 LSVC
-svm = LinearSVC(maxIter=10)
+svm = LinearSVC(maxIter=50,regParam=0.1)
 ovr = OneVsRest(classifier=svm,featuresCol="features",labelCol="AuthorNum")
 ovrModel = ovr.fit(train)
 
