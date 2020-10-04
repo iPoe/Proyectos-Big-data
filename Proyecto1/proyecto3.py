@@ -115,16 +115,15 @@ train2, test2 = raw_data.randomSplit([0.8, 0.2])
 lr = LogisticRegression(labelCol="AuthorNum",maxIter=10,featuresCol="features")
 
 # Fit the model
-# lrModel = lr.fit(train)
+lrModel = lr.fit(train)
 
 # # Print the coefficients and intercept for multinomial logistic regression
 # #print("Coefficients:" + str(lrModel.coefficientMatrix))
-
-# predict_test=lrModel.transform(test)
+predict_test=lrModel.transform(test)
 
 evaluator = MulticlassClassificationEvaluator(labelCol="AuthorNum", predictionCol="prediction", metricName="f1")
-# lr_accuracy = evaluator.evaluate(predict_test)
-# print("F1 score of LogisticRegression is = %g"% (lr_accuracy))
+lr_accuracy = evaluator.evaluate(predict_test)
+print("F1 score of LogisticRegression is = %g"% (lr_accuracy))
 
 
 # instantiate the One Vs Rest Classifier.
@@ -142,8 +141,6 @@ evaluator = MulticlassClassificationEvaluator(labelCol="AuthorNum", predictionCo
 # # compute the classification error on test data.
 # accuracy_ovr = evaluator.evaluate(predictions_ovr)
 # print("accuracy of LogisticRegression with ovr is = %g"% (accuracy_ovr))
-
-
 
 
 #Modelo 2
