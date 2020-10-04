@@ -124,7 +124,9 @@ print("Accuracy score of LogisticRegression is = %g"% (lr_accuracy))
 
 trainingSummary = lrModel.summary
 #print("F: %f" % trainingSummary.fMeasureByLabel)
-print("accuracy: %f" % trainingSummary.accuracy)
+print("accuracy of lr: %f" % trainingSummary.accuracy)
+print("f measure of lr: {}".format(trainingSummary.fMeasureByLabel))
+print("Recall by label of lr: {}".format(trainingSummary.recallByLabel))
 
 # instantiate the One Vs Rest Classifier.
 # ovr = OneVsRest(classifier=lr,labelCol='AuthorNum')
