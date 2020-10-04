@@ -65,3 +65,8 @@ F1 score of LogisticRegression is = 0.488826
 F1 Score of DecisionTreeClassifier is = 0.559968
 F1 Score of RandomForestClassifier is = 0.559968
 
+#12 drop f6 y balanceo igual al anterior
+F1 score of LogisticRegression is = 0.495416
+F1 Score of DecisionTreeClassifier is = 0.551281
+F1 Score of RandomForestClassifier is = 0.551281
+
