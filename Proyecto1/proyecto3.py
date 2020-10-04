@@ -124,9 +124,9 @@ print("Accuracy score of LogisticRegression is = %g"% (lr_accuracy))
 
 trainingSummary = lrModel.summary
 #print("F: %f" % trainingSummary.fMeasureByLabel)
-print("accuracy of lr: %f" % trainingSummary.accuracy)
+print("F1 Score of lr: %f" % trainingSummary.accuracy)
 #print("f measure of lr: {}".format(trainingSummary.fMeasureByLabel))
-print("Recall by label of lr: {}".format(trainingSummary.recallByLabel))
+#print("Recall by label of lr: {}".format(trainingSummary.recallByLabel))
 
 # instantiate the One Vs Rest Classifier.
 # ovr = OneVsRest(classifier=lr,labelCol='AuthorNum')
@@ -170,7 +170,7 @@ dt_model = dt.fit(train2)
 dt_prediction = dt_model.transform(test2)
 
 dt_accuracy = evaluator.evaluate(dt_prediction)
-print("Accuracy of DecisionTreeClassifier is = %g"% (dt_accuracy))
+print("F1 Score of DecisionTreeClassifier is = %g"% (dt_accuracy))
 
 #print("Test Error of DecisionTreeClassifier = %g " % (1.0 - dt_accuracy))
 #Modelo 3
@@ -201,5 +201,5 @@ rf_model = rf.fit(train2)
 rf_prediction = rf_model.transform(test2)
 
 rf_accuracy = evaluator.evaluate(rf_prediction)
-print("Accuracy of RandomForestClassifier is = %g"% (rf_accuracy))
+print("F1 Score of RandomForestClassifier is = %g"% (rf_accuracy))
 #print("Test Error of RandomForestClassifier  = %g " % (1.0 - rf_accuracy))
