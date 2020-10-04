@@ -139,3 +139,8 @@ Random Forest
 [0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 83, 0]
 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 200]
 
+#21 Balanceo de ana
+Accuracy score of LogisticRegression is = 0.582160555005
+Accuracy Score of DecisionTreeClassifier is = 0.994846382557
+Accuracy Score of RandomForestClassifier is = 0.944301288404
+
