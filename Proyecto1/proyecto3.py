@@ -130,26 +130,26 @@ train, test = data.randomSplit([0.8, 0.2],seed=20)
 raw_data=assembler.transform(raw_data)
 train2, test2 = raw_data.randomSplit([0.8, 0.2])
 
-import pyspark.sql.functions as F
-from pyspark.sql.types import FloatType
-from pyspark.mllib.evaluation import MulticlassMetrics
+# import pyspark.sql.functions as F
+# from pyspark.sql.types import FloatType
+# from pyspark.mllib.evaluation import MulticlassMetrics
 
-lr = LogisticRegression(labelCol="AuthorNum",maxIter=1000,featuresCol="features",family="multinomial",elasticNetParam=0.8)
+# lr = LogisticRegression(labelCol="AuthorNum",maxIter=1000,featuresCol="features",family="multinomial",elasticNetParam=0.8)
 
-# Fit the model
-lrModel = lr.fit(train)
+# # Fit the model
+# lrModel = lr.fit(train)
 
-predict_test=lrModel.transform(test)
+# predict_test=lrModel.transform(test)
 
-# preds_and_labels = predict_test.select(['prediction','AuthorNum']).withColumn('label', F.col('AuthorNum').cast(FloatType())).orderBy('prediction')
-# preds_and_labels = preds_and_labels.select(['prediction','AuthorNum'])
-# tp = preds_and_labels.rdd.map(tuple)
-# metrics = MulticlassMetrics(tp)
-# print(metrics.confusionMatrix().toArray())
+# # preds_and_labels = predict_test.select(['prediction','AuthorNum']).withColumn('label', F.col('AuthorNum').cast(FloatType())).orderBy('prediction')
+# # preds_and_labels = preds_and_labels.select(['prediction','AuthorNum'])
+# # tp = preds_and_labels.rdd.map(tuple)
+# # metrics = MulticlassMetrics(tp)
+# # print(metrics.confusionMatrix().toArray())
 
-evaluator = MulticlassClassificationEvaluator(labelCol="AuthorNum",	predictionCol="prediction", metricName="accuracy")
+# evaluator = MulticlassClassificationEvaluator(labelCol="AuthorNum",	predictionCol="prediction", metricName="accuracy")
 
-lr_accuracy = evaluator.evaluate(predict_test)
+# lr_accuracy = evaluator.evaluate(predict_test)
 #print("Accuracy score of LogisticRegression is = {}".format(lr_accuracy))
 #Matriz de confusion
 
@@ -170,7 +170,7 @@ evaluator = MulticlassClassificationEvaluator(labelCol="AuthorNum",predictionCol
 dt_accuracy = evaluator.evaluate(dt_prediction)
 #print("Accuracy Score of DecisionTreeClassifier is = {}" .format(dt_accuracy))
 
-preds_and_labels = dt_prediction.select(['prediction','AuthorNum']).withColumn('label', F.col('AuthorNum').cast(IntType())).orderBy('prediction')
+preds_and_labels = dt_prediction.select(['prediction','AuthorNum']).withColumn('label', F.col('AuthorNum').cast(FloatType())).orderBy('prediction')
 preds_and_labels = preds_and_labels.select(['prediction','AuthorNum'])
 tp = preds_and_labels.rdd.map(tuple)
 metrics = MulticlassMetrics(tp)
