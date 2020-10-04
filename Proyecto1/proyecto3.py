@@ -122,7 +122,23 @@ evaluator = MulticlassClassificationEvaluator(labelCol="AuthorNum", predictionCo
 lr_accuracy = evaluator.evaluate(predict_test)
 print("F1 score of LogisticRegression is = %g"% (lr_accuracy))
 
-trainingSummary = lrModel.summary
+paramGrid = (ParamGridBuilder()
+  .addGrid(lr.regParam, [0.01, 0.1, 0.5]) \
+  .addGrid(lr.maxIter, [10, 20, 50]) \
+  .addGrid(lr.elasticNetParam, [0.0, 0.8]) \
+  .build())
+
+crossval = CrossValidator(estimator=lr,
+                          estimatorParamMaps=paramGrid,
+                          evaluator=evaluator,
+                          numFolds=10)
+
+model_lr = crossval.fit(train)
+predictions_lr = model_lr.transform(test)
+
+print(evaluator.evaluate(predictions_lr))
+
+#trainingSummary = lrModel.summary
 #print("F: %f" % trainingSummary.fMeasureByLabel)
 #print("F1 Score of lr: %f" % trainingSummary.accuracy)
 #print("f measure of lr: {}".format(trainingSummary.fMeasureByLabel))
