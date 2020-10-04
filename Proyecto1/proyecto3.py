@@ -72,19 +72,19 @@ raw_data = data
 #data.groupby("AuthorNum").count().show()
 
 #Se balancea cada categoria
-A = data.filter(data.AuthorNum == 0.0).sample(fraction=0.9)
+A = data.filter(data.AuthorNum == 0.0)
 #A.groupby("AuthorNum").count().show()
 F = data.filter(col("AuthorNum") == 1.0).withColumn("dummy", explode(array([lit(x) for x in range(2)]))).drop('dummy')
 E = data.filter(col("AuthorNum") == 2.0).withColumn("dummy", explode(array([lit(x) for x in range(3)]))).drop('dummy')
 I = data.filter(col("AuthorNum") == 3.0).withColumn("dummy", explode(array([lit(x) for x in range(3)]))).drop('dummy')
 X = data.filter(col("AuthorNum") == 4.0).withColumn("dummy", explode(array([lit(x) for x in range(5)]))).drop('dummy')
 H = data.filter(col("AuthorNum") == 5.0).withColumn("dummy", explode(array([lit(x) for x in range(5)]))).drop('dummy')
-G = data.filter(col("AuthorNum") == 6.0).withColumn("dummy", explode(array([lit(x) for x in range(6)]))).drop('dummy')
-D = data.filter(col("AuthorNum") == 7.0).withColumn("dummy", explode(array([lit(x) for x in range(7)]))).drop('dummy')
-Y = data.filter(col("AuthorNum") == 8.0).withColumn("dummy", explode(array([lit(x) for x in range(10)]))).drop('dummy')
-C = data.filter(col("AuthorNum") == 9.0).withColumn("dummy", explode(array([lit(x) for x in range(10)]))).drop('dummy')
-W = data.filter(col("AuthorNum") == 10.0).withColumn("dummy", explode(array([lit(x) for x in range(10)]))).drop('dummy')
-B = data.filter(col("AuthorNum") == 11.0).withColumn("dummy", explode(array([lit(x) for x in range(10)]))).drop('dummy')
+G = data.filter(col("AuthorNum") == 6.0).withColumn("dummy", explode(array([lit(x) for x in range(5)]))).drop('dummy')
+D = data.filter(col("AuthorNum") == 7.0).withColumn("dummy", explode(array([lit(x) for x in range(5)]))).drop('dummy')
+Y = data.filter(col("AuthorNum") == 8.0).withColumn("dummy", explode(array([lit(x) for x in range(5)]))).drop('dummy')
+C = data.filter(col("AuthorNum") == 9.0).withColumn("dummy", explode(array([lit(x) for x in range(5)]))).drop('dummy')
+W = data.filter(col("AuthorNum") == 10.0).withColumn("dummy", explode(array([lit(x) for x in range(5)]))).drop('dummy')
+B = data.filter(col("AuthorNum") == 11.0).withColumn("dummy", explode(array([lit(x) for x in range(5)]))).drop('dummy')
 
 #Se juntan todas las categorias balanceadas
 data = A.union(B).union(C).union(D).union(E).union(F).union(G).union(H).union(I).union(W).union(Y).union(X)
@@ -164,8 +164,8 @@ print("accuracy: %f" % trainingSummary.accuracy)
 #Modelo 2
 from pyspark.ml.classification import DecisionTreeClassifier
 dt = DecisionTreeClassifier(labelCol="AuthorNum", featuresCol="features")
-dt_model = dt.fit(train)
-dt_prediction = dt_model.transform(test)
+dt_model = dt.fit(train2)
+dt_prediction = dt_model.transform(test2)
 
 dt_accuracy = evaluator.evaluate(dt_prediction)
 print("Accuracy of DecisionTreeClassifier is = %g"% (dt_accuracy))
@@ -194,8 +194,8 @@ print("Accuracy of DecisionTreeClassifier is = %g"% (dt_accuracy))
 
 from pyspark.ml.classification import RandomForestClassifier
 rf = DecisionTreeClassifier(labelCol="AuthorNum", featuresCol="features")
-rf_model = rf.fit(train)
-rf_prediction = rf_model.transform(test)
+rf_model = rf.fit(train2)
+rf_prediction = rf_model.transform(test2)
 
 rf_accuracy = evaluator.evaluate(rf_prediction)
 print("Accuracy of RandomForestClassifier is = %g"% (rf_accuracy))
