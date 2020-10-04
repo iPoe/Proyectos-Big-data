@@ -197,3 +197,15 @@ rf_prediction = rf_model.transform(test)
 rf_accuracy = evaluator.evaluate(rf_prediction)
 print("F1 Score of RandomForestClassifier is = %g"% (rf_accuracy))
 #print("Test Error of RandomForestClassifier  = %g " % (1.0 - rf_accuracy))
+
+
+#Modelo 4 LSVC
+svm = LinearSVC()
+ovr = OneVsRest(classifier=svm,featuresCol="featuresCol",labelCol="AuthorNum")
+ovrModel = ovr.fit(train)
+
+evaluator = MulticlassClassificationEvaluator(metricName="accuracy")
+
+predictions = ovrModel.transform(test)
+
+print("Accuracy: {}".format(evaluator.evaluate(predictions)))
