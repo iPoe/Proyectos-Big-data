@@ -150,15 +150,15 @@ print(metrics.confusionMatrix().toArray())
 evaluator = MulticlassClassificationEvaluator(labelCol="AuthorNum",	predictionCol="prediction", metricName="accuracy")
 
 lr_accuracy = evaluator.evaluate(predict_test)
-print("Accuracy score of LogisticRegression is = {}".format(lr_accuracy))
+#print("Accuracy score of LogisticRegression is = {}".format(lr_accuracy))
 #Matriz de confusion
 
 
 
 #Modelo 2
 import pyspark.sql.functions as F
-from pyspark.ml.classification import DecisionTreeClassifier
 from pyspark.sql.types import FloatType
+from pyspark.ml.classification import DecisionTreeClassifier
 from pyspark.mllib.evaluation import MulticlassMetrics
 
 dt = DecisionTreeClassifier(labelCol="AuthorNum", featuresCol="features",maxDepth=20)
@@ -168,7 +168,7 @@ dt_prediction = dt_model.transform(test)
 evaluator = MulticlassClassificationEvaluator(labelCol="AuthorNum",predictionCol="prediction", metricName="accuracy")
 
 dt_accuracy = evaluator.evaluate(dt_prediction)
-print("Accuracy Score of DecisionTreeClassifier is = {}" .format(dt_accuracy))
+#print("Accuracy Score of DecisionTreeClassifier is = {}" .format(dt_accuracy))
 
 preds_and_labels = dt_prediction.select(['prediction','AuthorNum']).withColumn('label', F.col('AuthorNum').cast(FloatType())).orderBy('prediction')
 preds_and_labels = preds_and_labels.select(['prediction','AuthorNum'])
@@ -181,9 +181,8 @@ print(metrics.confusionMatrix().toArray())
 
 #Random forest
 import pyspark.sql.functions as F
-from pyspark.ml.classification import RandomForestClassifier
-
 from pyspark.sql.types import FloatType
+from pyspark.ml.classification import RandomForestClassifier
 from pyspark.mllib.evaluation import MulticlassMetrics
 
 
@@ -195,7 +194,7 @@ evaluator = MulticlassClassificationEvaluator(labelCol="AuthorNum",
                                               predictionCol="prediction", metricName="accuracy")
 
 rf_accuracy = evaluator.evaluate(rf_prediction)
-print("Accuracy Score of RandomForestClassifier is = {}".format(rf_accuracy))
+#print("Accuracy Score of RandomForestClassifier is = {}".format(rf_accuracy))
 preds_and_labels = rf_prediction.select(['prediction','AuthorNum']).withColumn('label', F.col('AuthorNum').cast(FloatType())).orderBy('prediction')
 preds_and_labels = preds_and_labels.select(['prediction','AuthorNum'])
 tp = preds_and_labels.rdd.map(tuple)
