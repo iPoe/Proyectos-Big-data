@@ -202,7 +202,7 @@ print("F1 Score of RandomForestClassifier is = %g"% (rf_accuracy))
 
 #Modelo 4 LSVC
 svm = LinearSVC()
-ovr = OneVsRest(classifier=svm,featuresCol="featuresCol",labelCol="AuthorNum")
+ovr = OneVsRest(classifier=svm,featuresCol="features",labelCol="AuthorNum")
 ovrModel = ovr.fit(train)
 
 evaluator = MulticlassClassificationEvaluator(metricName="accuracy")
