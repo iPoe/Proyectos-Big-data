@@ -115,40 +115,38 @@ train2, test2 = raw_data.randomSplit([0.8, 0.2])
 lr = LogisticRegression(labelCol="AuthorNum",maxIter=10,featuresCol="features")
 
 # Fit the model
-lrModel = lr.fit(train)
+# lrModel = lr.fit(train)
 
-# Print the coefficients and intercept for multinomial logistic regression
-#print("Coefficients:" + str(lrModel.coefficientMatrix))
+# # Print the coefficients and intercept for multinomial logistic regression
+# #print("Coefficients:" + str(lrModel.coefficientMatrix))
 
-predict_test=lrModel.transform(test)
+# predict_test=lrModel.transform(test)
 
 evaluator = MulticlassClassificationEvaluator(labelCol="AuthorNum", predictionCol="prediction", metricName="f1")
-lr_accuracy = evaluator.evaluate(predict_test)
-print("F1 score of LogisticRegression is = %g"% (lr_accuracy))
+# lr_accuracy = evaluator.evaluate(predict_test)
+# print("F1 score of LogisticRegression is = %g"% (lr_accuracy))
 
 
-# from pyspark.ml.tuning import CrossValidator, ParamGridBuilder
-# paramGrid = (ParamGridBuilder()
-#   .addGrid(lr.regParam, [0.01, 0.1, 0.5]) \
-#   .addGrid(lr.maxIter, [10, 20, 50]) \
-#   .addGrid(lr.elasticNetParam, [0.0, 0.8]) \
-#   .build())
+from pyspark.ml.tuning import CrossValidator, ParamGridBuilder
+paramGrid = (ParamGridBuilder()
+  .addGrid(lr.regParam, [0.01, 0.1, 0.5]) \
+  .addGrid(lr.maxIter, [10, 20, 50]) \
+  .addGrid(lr.elasticNetParam, [0.0, 0.8]) \
+  .build())
 
-# crossval = CrossValidator(estimator=lr,
-#                           estimatorParamMaps=paramGrid,
-#                           evaluator=evaluator,
-#                           numFolds=10)
+crossval = CrossValidator(estimator=lr,
+                          estimatorParamMaps=paramGrid,
+                          evaluator=evaluator,
+                          numFolds=10)
 
-# model_lr = crossval.fit(train)
-# predictions_lr = model_lr.transform(test)
+model_lr = crossval.fit(train)
+predictions_lr = model_lr.transform(test)
 
-# print(evaluator.evaluate(predictions_lr))
+f1_grid = evaluator.evaluate(predictions_lr)
 
-#trainingSummary = lrModel.summary
-#print("F: %f" % trainingSummary.fMeasureByLabel)
-#print("F1 Score of lr: %f" % trainingSummary.accuracy)
-#print("f measure of lr: {}".format(trainingSummary.fMeasureByLabel))
-#print("Recall by label of lr: {}".format(trainingSummary.recallByLabel))
+
+print("F1 with grid: {}".format(f1_grid))
+
 
 # instantiate the One Vs Rest Classifier.
 # ovr = OneVsRest(classifier=lr,labelCol='AuthorNum')
