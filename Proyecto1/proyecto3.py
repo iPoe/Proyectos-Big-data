@@ -44,9 +44,6 @@ pd = data.toPandas()
 print("Correlacion entre atributos")
 print(pd.corr())
 
-#Diagrama de cajas para verificar datos atipicos (Jupyter)
-#plt.boxplot((pd['F1'],pd['F2'],pd['F3'],pd['F4'],pd['F5'],pd['F6'],pd['F7'],pd['F8'],pd['F9'],pd['F10']))
-#plt.show()
 
 #Distribucion del atributo clasificador
 print("Distribucion del atributo clasificador")
@@ -62,16 +59,15 @@ data = data.filter(data.F2<350)
 #print("Datos Demasiado Atipicos de F2 Eliminados:",data.count())
 
 
-#print("Atributo F10 Eliminado:",data.columns)
 
-#print("Conversion de atributos categoricos a numericos")
+
+print("Conversion de atributos categoricos a numericos")
 indexer = StringIndexer(inputCol="Author", outputCol="AuthorNum")
 data = indexer.fit(data).transform(data)
 data = data.drop('Author')
 data.groupby("AuthorNum").count().show()
 
-#Prueba con df sin balancear
-raw_data = data
+
 
 #Se balancea cada categoria
 
@@ -110,11 +106,6 @@ data=assembler.transform(data)
 #data.select("features").show(truncate=False)
 train, test = data.randomSplit([0.8, 0.2],seed=20)
 
-raw_data=assembler.transform(raw_data)
-train2, test2 = raw_data.randomSplit([0.8, 0.2])
-
-
-
 
 lr = LogisticRegression(labelCol="AuthorNum",maxIter=1000,featuresCol="features",family="multinomial",elasticNetParam=0.8)
 
@@ -125,7 +116,6 @@ evaluator = MulticlassClassificationEvaluator(labelCol="AuthorNum",	predictionCo
 
 lr_accuracy = evaluator.evaluate(predict_test)
 print("Accuracy score of LogisticRegression is = {}".format(lr_accuracy))
-#Matriz de confusion
 
 
 
