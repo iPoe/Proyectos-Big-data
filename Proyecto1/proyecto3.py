@@ -54,9 +54,9 @@ data.groupby("Author").count().show()
 
 #Como se puede ver en los diagramas de cajas, el atributo F2 tiene datos que son demasiado atipicos
 #Estos registros se eliminaran
-#print("LIMPIEZA DE LOS DATOS")
+print("LIMPIEZA DE LOS DATOS")
 data = data.filter(data.F2<350)
-#print("Datos Demasiado Atipicos de F2 Eliminados:",data.count())
+print("Datos Demasiado Atipicos de F2 Eliminados:",data.count())
 
 
 
@@ -98,12 +98,9 @@ print("Numero de Registros Dataset Limpio:",data.count(),", Atributos:",len(data
 
 cols=data.columns
 cols.remove("AuthorNum")
-# Let us import the vector assembler
 
 assembler = VectorAssembler(inputCols=cols,outputCol="features")
-# Now let us use the transform method to transform our dataset
 data=assembler.transform(data)
-#data.select("features").show(truncate=False)
 train, test = data.randomSplit([0.8, 0.2],seed=20)
 
 
