@@ -41,6 +41,7 @@ streamingActionCountsDF = (
     )
     .count()
 )
+streamingActionCountsDF.isStreaming
 
 spark.conf.set("spark.sql.shuffle.partitions", "2")
 
@@ -54,7 +55,7 @@ query = (
     .start()
 )
 
-#streamingActionCountsDF.isStreaming
+
 
 
 
