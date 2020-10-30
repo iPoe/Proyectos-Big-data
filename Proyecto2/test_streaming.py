@@ -1,4 +1,4 @@
-from pyspark.sql.types import TimestampType, StringType
+from pyspark.sql.types import TimestampType, StringType, StructType, StructField
 
 
 
