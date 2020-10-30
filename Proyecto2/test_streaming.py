@@ -7,7 +7,7 @@ spark = SparkSession.builder.master("local").appName("Avila").config("spark.some
 
 
 
-inputPath = "/home/maria_dev/projectbig/Proyectos-Big-data/Proyecto2/stream_files/"
+inputPath = "/user/maria_dev/stream_files/"
 
 
 schema = StructType([ StructField("time", TimestampType(), True),
