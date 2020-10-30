@@ -48,7 +48,7 @@ spark.conf.set("spark.sql.shuffle.partitions", "2")
 query = (
   streamingActionCountsDF
     .writeStream
-    .format("memory")
+    .format("console")
     .queryName("counts")
     .outputMode("complete")
     .start()
