@@ -1,0 +1,44 @@
+from pyspark.sql.types import TimestampType, StringType
+
+
+
+inputPath = "/home/maria_dev/projectbig/Proyectos-Big-data/Proyecto2/stream_files/"
+
+
+schema = StructType([ StructField("time", TimestampType(), True),
+                      StructField("customer", StringType(), True),
+                      StructField("action", StringType(), True),
+                      StructField("device", StringType(), True)])
+
+# Create DataFrame representing data in the JSON files
+inputDF = (
+  spark
+    .read
+    .schema(schema)
+    .json(inputPath)
+)
+
+display(inputDF)
+
+
+streamingDF = (
+  spark
+    .readStream
+    .schema(schema)
+    .option("maxFilesPerTrigger", 1)
+    .json(inputPath)
+)
+
+streamingActionCountsDF = (
+  streamingDF
+    .groupBy(
+      streamingDF.action
+    )
+    .count()
+)
+
+streamingActionCountsDF.isStreaming
+
+
+
+
