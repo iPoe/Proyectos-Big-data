@@ -42,6 +42,18 @@ streamingActionCountsDF = (
     .count()
 )
 
+spark.conf.set("spark.sql.shuffle.partitions", "2")
+
+# View stream in real-time
+query = (
+  streamingActionCountsDF
+    .writeStream
+    .format("memory")
+    .queryName("counts")
+    .outputMode("complete")
+    .start()
+)
+
 #streamingActionCountsDF.isStreaming
 
 
