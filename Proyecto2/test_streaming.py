@@ -23,7 +23,7 @@ inputDF = (
     .json(inputPath)
 )
 
-display(inputDF)
+inputDF.printSchema()
 
 
 streamingDF = (
@@ -42,7 +42,7 @@ streamingActionCountsDF = (
     .count()
 )
 
-streamingActionCountsDF.isStreaming
+#streamingActionCountsDF.isStreaming
 
 
 
