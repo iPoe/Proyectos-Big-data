@@ -132,7 +132,7 @@ print("Accuracy Score of DecisionTreeClassifier is = {}" .format(dt_accuracy))
 from pyspark.ml.classification import RandomForestClassifier
 
 
-rf = RandomForestClassifier(labelCol="AuthorNum", featuresCol="features",numTrees=10,subsamplingRate=1,maxDepth=10)
+rf = RandomForestClassifier(labelCol="AuthorNum", featuresCol="features",numTrees=10,subsamplingRate=1,maxDepth=20)
 rf_model = rf.fit(train)
 rf_prediction = rf_model.transform(test)
 
